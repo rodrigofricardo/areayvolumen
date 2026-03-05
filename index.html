@@ -1,0 +1,2479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secuencia Didáctica – Áreas y Volúmenes | Mg. Rodrigo F. Ricardo C.</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --ink:#0f0e17; --paper:#faf8f3; --cream:#f0ebe0;
+    --gold:#c9974c; --gold-light:#f2e0c0;
+    --teal:#0d7377; --teal-light:#d4f0f0;
+    --rose:#b5451b; --rose-light:#fce8e0;
+    --violet:#5c3d8f; --violet-light:#ede5f8;
+    --olive:#4a7c59; --olive-light:#e2f0e7;
+    --border:#d8d0bf; --shadow:rgba(15,14,23,0.08);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.7;font-size:16px;}
+
+  /* HEADER */
+  .site-header{background:var(--ink);color:var(--paper);padding:60px 40px 50px;position:relative;overflow:hidden;}
+  .site-header::before{content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;border-radius:50%;border:60px solid rgba(201,151,76,0.12);}
+  .site-header::after{content:'';position:absolute;bottom:-60px;left:200px;width:250px;height:250px;border-radius:50%;border:40px solid rgba(13,115,119,0.15);}
+  .header-inner{max-width:1100px;margin:0 auto;position:relative;z-index:1;}
+  .header-badge{display:inline-block;background:var(--gold);color:var(--ink);font-weight:600;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:6px 18px;border-radius:2px;margin-bottom:24px;}
+  .site-header h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.6rem);font-weight:900;line-height:1.15;margin-bottom:16px;letter-spacing:-1px;}
+  .site-header h1 span{color:var(--gold);}
+  .header-subtitle{font-size:1rem;opacity:0.7;margin-bottom:30px;font-weight:300;}
+  .header-meta{display:flex;gap:24px;flex-wrap:wrap;font-size:13px;opacity:0.6;}
+
+  /* NAV */
+  .sticky-nav{position:sticky;top:0;z-index:100;background:rgba(250,248,243,0.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:0 40px;}
+  .nav-inner{max-width:1100px;margin:0 auto;display:flex;gap:0;overflow-x:auto;}
+  .nav-inner::-webkit-scrollbar{height:3px}
+  .nav-inner::-webkit-scrollbar-thumb{background:var(--gold)}
+  .nav-link{display:block;padding:16px 18px;font-size:13px;font-weight:500;color:var(--ink);opacity:0.55;text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s;}
+  .nav-link:hover,.nav-link.active{opacity:1;border-bottom-color:var(--gold);color:var(--gold);}
+
+  /* LAYOUT */
+  .section{padding:60px 40px;max-width:1100px;margin:0 auto;}
+  .divider{height:1px;background:var(--border);max-width:1100px;margin:0 auto;}
+
+  /* SECTION HEADERS */
+  .section-header{display:flex;align-items:flex-start;gap:20px;margin-bottom:44px;padding-bottom:22px;border-bottom:1px solid var(--border);}
+  .section-number{font-family:'Playfair Display',serif;font-size:5rem;font-weight:900;line-height:1;color:var(--gold-light);flex-shrink:0;margin-top:-8px;}
+  .section-title-group h2{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,2.1rem);font-weight:700;line-height:1.2;margin-bottom:8px;}
+  .section-title-group p{font-size:14px;color:#666;font-weight:300;}
+
+  /* CARDS */
+  .grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(460px,1fr));gap:28px;}
+  .grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;}
+  .card{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:transform .2s,box-shadow .2s;}
+  .card:hover{transform:translateY(-2px);box-shadow:0 12px 40px var(--shadow);}
+  .card-header{padding:20px 24px 16px;display:flex;align-items:center;gap:14px;}
+  .card-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+  .card-header h3{font-size:17px;font-weight:600;}
+  .card-body{padding:0 24px 24px;}
+  .card-body p{font-size:14px;color:#444;line-height:1.7;margin-bottom:10px;}
+  .c-teal .card-icon{background:var(--teal-light);color:var(--teal);}
+  .c-rose .card-icon{background:var(--rose-light);color:var(--rose);}
+  .c-violet .card-icon{background:var(--violet-light);color:var(--violet);}
+  .c-olive .card-icon{background:var(--olive-light);color:var(--olive);}
+
+  /* FORMULA */
+  .formula{background:var(--ink);color:var(--paper);border-radius:10px;padding:18px 22px;margin:16px 0;font-family:'JetBrains Mono',monospace;font-size:15px;position:relative;overflow:hidden;}
+  .formula .label{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:block;}
+  .formula .eq{font-size:17px;font-weight:700;color:#fff;}
+  .formula .where{font-size:12px;opacity:0.6;margin-top:6px;}
+
+  /* EXAMPLE */
+  .example{border-left:4px solid var(--gold);background:var(--gold-light);border-radius:0 10px 10px 0;padding:20px 24px;margin:20px 0;}
+  .example .ex-title{font-weight:700;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-bottom:14px;}
+  .step{display:flex;gap:14px;margin:10px 0;align-items:flex-start;}
+  .step-n{width:28px;height:28px;background:var(--ink);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:2px;}
+  .step-body{font-size:14px;line-height:1.7;}
+  .step-body strong{color:var(--teal);}
+  .math{display:inline-block;font-family:'JetBrains Mono',monospace;background:#fff;border:1px solid #ddd;border-radius:4px;padding:2px 8px;font-size:13px;color:var(--rose);}
+
+  /* CONCEPT */
+  .concept{background:#fff;border-radius:12px;border:1px solid var(--border);padding:24px 28px;margin:20px 0;position:relative;}
+  .concept-tag{position:absolute;top:-12px;left:20px;background:var(--teal);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;padding:4px 12px;border-radius:4px;text-transform:uppercase;}
+  .concept p{font-size:14px;line-height:1.8;color:#333;margin-top:8px;}
+
+  /* TABS */
+  .tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:28px;overflow-x:auto;}
+  .tab{padding:12px 22px;font-size:14px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;color:#888;transition:all .2s;white-space:nowrap;}
+  .tab.active{color:var(--teal);border-bottom-color:var(--teal);font-weight:600;}
+  .tab-content{display:none;}
+  .tab-content.active{display:block;animation:fadeIn .3s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ACTIVITY */
+  .activity{border:2px dashed var(--violet);border-radius:14px;padding:28px 32px;margin:28px 0;background:var(--violet-light);position:relative;}
+  .activity::before{content:'✏️ ACTIVIDAD';position:absolute;top:-14px;left:24px;background:var(--violet);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;padding:4px 14px;border-radius:4px;}
+  .activity h4{font-size:16px;font-weight:700;margin-bottom:16px;color:var(--violet);}
+  .activity ol{padding-left:20px;}
+  .activity ol li{font-size:14px;line-height:1.8;margin-bottom:8px;}
+  .verify-btn{background:var(--violet);color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;margin-top:14px;transition:all .2s;}
+  .verify-btn:hover{opacity:0.85;}
+  .answer-area{margin-top:12px;background:#fff;border-radius:8px;padding:16px;font-size:14px;display:none;border-left:3px solid var(--olive);}
+  .answer-area.show{display:block;}
+
+  /* ===== FORMULA TABLE WITH DIAGRAMS ===== */
+  .formula-table-wrap{overflow-x:auto;margin:24px 0;}
+  .formula-table{width:100%;border-collapse:collapse;font-size:14px;}
+  .formula-table th{background:var(--ink);color:#fff;padding:13px 16px;text-align:left;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;}
+  .formula-table td{padding:14px 16px;border-bottom:1px solid var(--border);vertical-align:middle;}
+  .formula-table tr:nth-child(even) td{background:var(--cream);}
+  .formula-table tr:hover td{background:var(--gold-light);}
+  .formula-table td:first-child{font-weight:700;color:var(--teal);font-size:13px;}
+  .formula-table td.formula-cell{font-family:'JetBrains Mono',monospace;color:var(--rose);font-size:13px;}
+  .diag-cell{text-align:center;padding:8px 12px;}
+
+  /* ===== INTERACTIVE SLIDERS ===== */
+  .interactive{background:linear-gradient(135deg,var(--teal) 0%,#095e62 100%);border-radius:16px;padding:30px;color:#fff;margin:28px 0;}
+  .interactive h3{font-family:'Playfair Display',serif;font-size:1.35rem;margin-bottom:6px;}
+  .interactive .sub{font-size:13px;opacity:0.75;margin-bottom:22px;}
+  .inter-body{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+  @media(max-width:700px){.inter-body{grid-template-columns:1fr;}}
+  .slider-panel{}
+  .slider-group{margin-bottom:18px;}
+  .slider-group label{display:flex;justify-content:space-between;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;opacity:0.85;margin-bottom:8px;}
+  .slider-group label span{font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.18);border-radius:4px;padding:2px 10px;font-size:13px;min-width:48px;text-align:center;}
+  input[type=range]{width:100%;-webkit-appearance:none;height:6px;border-radius:3px;background:rgba(255,255,255,0.25);outline:none;cursor:pointer;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--gold);border:2px solid #fff;cursor:pointer;transition:transform .15s;}
+  input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2);}
+  .select-group{margin-bottom:18px;}
+  .select-group label{display:block;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;opacity:0.85;margin-bottom:8px;}
+  .select-group select{width:100%;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;}
+  .select-group select option{background:#0d5c60;color:#fff;}
+  .result-box{background:rgba(0,0,0,0.28);border-radius:10px;padding:16px 18px;margin-top:16px;font-family:'JetBrains Mono',monospace;}
+  .result-box .rl{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:0.5;margin-bottom:6px;}
+  .result-box .rv{font-size:15px;font-weight:700;line-height:1.8;}
+  .figure-panel{background:rgba(0,0,0,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;min-height:220px;padding:16px;}
+  .figure-panel svg{max-width:100%;height:auto;}
+
+  /* ===== QUIZ ===== */
+  .quiz-section{background:var(--ink);color:var(--paper);padding:70px 40px;}
+  .quiz-inner{max-width:1100px;margin:0 auto;}
+  .quiz-header{margin-bottom:40px;text-align:center;}
+  .quiz-header h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;margin-bottom:10px;}
+  .quiz-header h2 span{color:var(--gold);}
+  .quiz-header p{opacity:0.6;font-size:15px;}
+  .quiz-meta{display:flex;justify-content:center;gap:24px;margin:24px 0;flex-wrap:wrap;}
+  .quiz-meta-item{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 22px;text-align:center;}
+  .quiz-meta-item .n{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold);}
+  .quiz-meta-item .l{font-size:11px;opacity:0.55;letter-spacing:2px;text-transform:uppercase;}
+
+  /* TIMER */
+  #timer-section{text-align:center;margin-bottom:36px;}
+  #start-btn{background:var(--gold);color:var(--ink);border:none;border-radius:10px;padding:14px 44px;font-size:16px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:0.5px;transition:all .2s;}
+  #start-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,151,76,0.35);}
+  #start-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:none;}
+  #timer-display{display:none;flex-direction:column;align-items:center;gap:8px;}
+  #timer-display.show{display:flex;}
+  .timer-ring{position:relative;width:110px;height:110px;margin:0 auto;}
+  .timer-ring svg{transform:rotate(-90deg);}
+  .timer-ring .bg{fill:none;stroke:rgba(255,255,255,0.1);stroke-width:6;}
+  .timer-ring .progress{fill:none;stroke:var(--gold);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .9s linear,stroke .5s;}
+  #timer-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:#fff;}
+  #timer-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0.5;margin-top:4px;}
+  .timer-warning .progress{stroke:#e74c3c!important;}
+  #timer-text.warning{color:#e74c3c;}
+
+  .question-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:14px;padding:28px 32px;margin-bottom:20px;transition:border-color .2s;opacity:0.4;pointer-events:none;transition:opacity .3s;}
+  .question-card.unlocked{opacity:1;pointer-events:all;}
+  .question-card:hover.unlocked{border-color:rgba(201,151,76,0.35);}
+  .q-num{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600;}
+  .q-competencia{font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:0.4;margin-bottom:12px;}
+  .q-text{font-size:15px;line-height:1.8;margin-bottom:18px;}
+  .q-options{display:flex;flex-direction:column;gap:10px;}
+  .q-option{display:flex;align-items:flex-start;gap:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:13px 18px;cursor:pointer;transition:all .2s;font-size:14px;}
+  .q-option:hover{background:rgba(201,151,76,0.1);border-color:rgba(201,151,76,0.3);}
+  .q-option.selected{background:rgba(201,151,76,0.15);border-color:var(--gold);}
+  .q-option.correct{background:rgba(74,124,89,0.2);border-color:#4a7c59;}
+  .q-option.wrong{background:rgba(181,69,27,0.2);border-color:#b5451b;}
+  .opt-letter{width:28px;height:28px;background:rgba(255,255,255,0.08);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;}
+  .quiz-controls{display:flex;justify-content:center;gap:16px;margin-top:36px;flex-wrap:wrap;}
+  .btn-quiz{background:var(--gold);color:var(--ink);border:none;border-radius:10px;padding:14px 38px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+  .btn-quiz:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,151,76,0.3);}
+  .btn-quiz.secondary{background:transparent;color:var(--paper);border:1px solid rgba(255,255,255,0.2);}
+  .btn-quiz.secondary:hover{background:rgba(255,255,255,0.07);}
+  #quiz-score{text-align:center;padding:40px;display:none;animation:fadeIn .5s ease;}
+  #quiz-score.show{display:block;}
+  .score-circle{width:140px;height:140px;border-radius:50%;border:6px solid var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 24px;}
+  .score-circle .sn{font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;color:var(--gold);}
+  .score-circle .sl{font-size:12px;opacity:0.5;}
+  .feedback-text{font-size:1.1rem;margin-bottom:8px;}
+  .feedback-sub{font-size:14px;opacity:0.55;}
+  .competencias-info{background:rgba(255,255,255,0.05);border-radius:12px;padding:22px;margin:32px 0;font-size:13px;opacity:0.7;line-height:1.8;}
+  .competencias-info h4{color:var(--gold);font-size:14px;margin-bottom:10px;letter-spacing:1px;}
+
+  /* DATA TABLE */
+  .data-table{width:100%;border-collapse:collapse;font-size:14px;margin:16px 0;}
+  .data-table th{background:var(--ink);color:#fff;padding:12px 16px;text-align:left;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;}
+  .data-table td{padding:12px 16px;border-bottom:1px solid var(--border);}
+  .data-table tr:nth-child(even) td{background:var(--cream);}
+  .data-table tr:hover td{background:var(--gold-light);}
+  .data-table td:first-child{font-weight:600;color:var(--teal);}
+
+  footer{background:var(--cream);border-top:1px solid var(--border);padding:36px 40px;text-align:center;font-size:13px;color:#888;}
+  footer strong{color:var(--ink);}
+  @media(max-width:700px){
+    .site-header{padding:36px 20px;} .section{padding:40px 20px;}
+    .sticky-nav{padding:0 12px;} .quiz-section{padding:44px 20px;}
+    .grid-2{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-badge">Grado 11° · Matemáticas</div>
+    <h1>Áreas y <span>Volúmenes</span><br>en Geometría</h1>
+    <p class="header-subtitle">Figuras planas y sólidos geométricos · Secuencia didáctica completa</p>
+    <div class="header-meta">
+      <span>📐 Docente: Mg. Rodrigo F. Ricardo C.</span>
+      <span>📚 Área: Matemáticas</span>
+      <span>🎯 Grado: Undécimo</span>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="sticky-nav">
+  <div class="nav-inner">
+    <a class="nav-link active" href="#intro">Introducción</a>
+    <a class="nav-link" href="#planas">Figuras Planas</a>
+    <a class="nav-link" href="#solidos">Sólidos Geométricos</a>
+    <a class="nav-link" href="#calculadoras">Calculadoras</a>
+    <a class="nav-link" href="#actividades">Actividades</a>
+    <a class="nav-link" href="#prueba">Prueba ICFES</a>
+  </div>
+</nav>
+
+<!-- ===== 01 INTRODUCCIÓN ===== -->
+<section class="section" id="intro">
+  <div class="section-header">
+    <div class="section-number">01</div>
+    <div class="section-title-group">
+      <h2>Introducción y Propósitos de Aprendizaje</h2>
+      <p>Mg. Rodrigo F. Ricardo C. · Docente de Matemáticas</p>
+    </div>
+  </div>
+
+  <div class="concept">
+    <div class="concept-tag">¿Qué aprenderemos?</div>
+    <p>En esta secuencia didáctica exploraremos el cálculo del <strong>área de figuras planas</strong> (cuadrado, rectángulo, triángulo y circunferencia) y el <strong>volumen de sólidos geométricos</strong> (cubo, prisma rectangular, cilindro y esfera). Aprenderemos los conceptos fundamentales, sus fórmulas, aplicaciones en contextos reales y resolveremos problemas del nivel de las pruebas Saber 11°.</p>
+  </div>
+
+  <div style="margin-top:32px;">
+    <div class="grid-4">
+      <div class="card c-teal"><div class="card-header"><div class="card-icon">📐</div><h3 style="font-size:15px;">Conceptual</h3></div><div class="card-body"><p style="font-size:13px;">Comprender área y volumen como medidas geométricas fundamentales.</p></div></div>
+      <div class="card c-rose"><div class="card-header"><div class="card-icon">🔢</div><h3 style="font-size:15px;">Procedimental</h3></div><div class="card-body"><p style="font-size:13px;">Aplicar correctamente las fórmulas en distintos contextos.</p></div></div>
+      <div class="card c-violet"><div class="card-header"><div class="card-icon">🌍</div><h3 style="font-size:15px;">Contextual</h3></div><div class="card-body"><p style="font-size:13px;">Resolver problemas de la vida cotidiana con medición de superficies y capacidades.</p></div></div>
+      <div class="card c-olive"><div class="card-header"><div class="card-icon">🏆</div><h3 style="font-size:15px;">Evaluativo</h3></div><div class="card-body"><p style="font-size:13px;">Prepararse para las competencias del ICFES Saber 11°.</p></div></div>
+    </div>
+  </div>
+
+  <!-- FORMULA TABLE WITH DIAGRAMS -->
+  <div style="margin-top:44px;">
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:20px;">Resumen Visual de Fórmulas</h3>
+    <div class="formula-table-wrap">
+      <table class="formula-table">
+        <thead>
+          <tr>
+            <th>Figura / Sólido</th>
+            <th style="text-align:center;">Diagrama</th>
+            <th>Tipo</th>
+            <th>Fórmula principal</th>
+            <th>Otras medidas</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- CUADRADO -->
+          <tr>
+            <td>Cuadrado</td>
+            <td class="diag-cell">
+              <svg width="90" height="90" viewBox="0 0 90 90">
+                <rect x="10" y="10" width="70" height="70" fill="#D6E4F0" stroke="#0d7377" stroke-width="2.5" rx="1"/>
+                <line x1="10" y1="82" x2="80" y2="82" stroke="#0d7377" stroke-width="1.5"/>
+                <line x1="10" y1="79" x2="10" y2="85" stroke="#0d7377" stroke-width="1.5"/>
+                <line x1="80" y1="79" x2="80" y2="85" stroke="#0d7377" stroke-width="1.5"/>
+                <text x="45" y="89" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#0d7377" font-weight="700">l</text>
+                <line x1="83" y1="10" x2="83" y2="80" stroke="#0d7377" stroke-width="1.5"/>
+                <line x1="80" y1="10" x2="86" y2="10" stroke="#0d7377" stroke-width="1.5"/>
+                <line x1="80" y1="80" x2="86" y2="80" stroke="#0d7377" stroke-width="1.5"/>
+                <text x="89" y="48" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#0d7377" font-weight="700">l</text>
+                <rect x="10" y="10" width="10" height="10" fill="none" stroke="#0d7377" stroke-width="1.5"/>
+              </svg>
+            </td>
+            <td>Figura plana</td>
+            <td class="formula-cell">A = l²</td>
+            <td style="font-size:13px;">P = 4l &nbsp;|&nbsp; d = l√2</td>
+          </tr>
+
+          <!-- RECTÁNGULO -->
+          <tr>
+            <td>Rectángulo</td>
+            <td class="diag-cell">
+              <svg width="110" height="75" viewBox="0 0 110 75">
+                <rect x="8" y="10" width="94" height="52" fill="#FCE8E0" stroke="#b5451b" stroke-width="2.5" rx="1"/>
+                <line x1="8" y1="67" x2="102" y2="67" stroke="#b5451b" stroke-width="1.5"/>
+                <line x1="8" y1="64" x2="8" y2="70" stroke="#b5451b" stroke-width="1.5"/>
+                <line x1="102" y1="64" x2="102" y2="70" stroke="#b5451b" stroke-width="1.5"/>
+                <text x="55" y="74" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#b5451b" font-weight="700">b</text>
+                <line x1="105" y1="10" x2="105" y2="62" stroke="#b5451b" stroke-width="1.5"/>
+                <line x1="102" y1="10" x2="108" y2="10" stroke="#b5451b" stroke-width="1.5"/>
+                <line x1="102" y1="62" x2="108" y2="62" stroke="#b5451b" stroke-width="1.5"/>
+                <text x="109" y="39" font-family="DM Sans" font-size="11" fill="#b5451b" font-weight="700">h</text>
+                <rect x="8" y="10" width="9" height="9" fill="none" stroke="#b5451b" stroke-width="1.5"/>
+              </svg>
+            </td>
+            <td>Figura plana</td>
+            <td class="formula-cell">A = b × h</td>
+            <td style="font-size:13px;">P = 2(b+h) &nbsp;|&nbsp; d = √(b²+h²)</td>
+          </tr>
+
+          <!-- TRIÁNGULO -->
+          <tr>
+            <td>Triángulo</td>
+            <td class="diag-cell">
+              <svg width="95" height="90" viewBox="0 0 95 90">
+                <polygon points="47,8 5,82 89,82" fill="#EDE5F8" stroke="#5c3d8f" stroke-width="2.5"/>
+                <line x1="47" y1="8" x2="47" y2="82" stroke="#5c3d8f" stroke-width="1.5" stroke-dasharray="4,3"/>
+                <rect x="41" y="76" width="8" height="8" fill="none" stroke="#5c3d8f" stroke-width="1.5"/>
+                <text x="52" y="50" font-family="DM Sans" font-size="11" fill="#5c3d8f" font-weight="700">h</text>
+                <line x1="5" y1="87" x2="89" y2="87" stroke="#5c3d8f" stroke-width="1.5"/>
+                <line x1="5" y1="84" x2="5" y2="90" stroke="#5c3d8f" stroke-width="1.5"/>
+                <line x1="89" y1="84" x2="89" y2="90" stroke="#5c3d8f" stroke-width="1.5"/>
+                <text x="47" y="94" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#5c3d8f" font-weight="700">b</text>
+              </svg>
+            </td>
+            <td>Figura plana</td>
+            <td class="formula-cell">A = (b×h)/2</td>
+            <td style="font-size:13px;">Herón: s=(a+b+c)/2 &nbsp; A=√[s(s-a)(s-b)(s-c)]</td>
+          </tr>
+
+          <!-- CIRCUNFERENCIA -->
+          <tr>
+            <td>Círculo</td>
+            <td class="diag-cell">
+              <svg width="90" height="90" viewBox="0 0 90 90">
+                <circle cx="45" cy="45" r="36" fill="#E2F0E7" stroke="#4a7c59" stroke-width="2.5"/>
+                <circle cx="45" cy="45" r="3" fill="#4a7c59"/>
+                <line x1="45" y1="45" x2="81" y2="45" stroke="#4a7c59" stroke-width="2"/>
+                <text x="60" y="40" font-family="DM Sans" font-size="11" fill="#4a7c59" font-weight="700">r</text>
+                <line x1="9" y1="45" x2="81" y2="45" stroke="#4a7c59" stroke-width="1" stroke-dasharray="3,3" opacity="0.4"/>
+                <text x="14" y="42" font-family="DM Sans" font-size="10" fill="#4a7c59" opacity="0.6">d</text>
+              </svg>
+            </td>
+            <td>Figura plana</td>
+            <td class="formula-cell">A = π·r²</td>
+            <td style="font-size:13px;">C = 2πr &nbsp;|&nbsp; d = 2r</td>
+          </tr>
+
+          <!-- CUBO -->
+          <tr>
+            <td>Cubo</td>
+            <td class="diag-cell">
+              <svg width="90" height="90" viewBox="0 0 90 90">
+                <polygon points="15,30 60,30 60,75 15,75" fill="#D6E4F0" stroke="#0d7377" stroke-width="2"/>
+                <polygon points="15,30 35,10 80,10 60,30" fill="#B8D4E8" stroke="#0d7377" stroke-width="2"/>
+                <polygon points="60,30 80,10 80,55 60,75" fill="#9BC4D8" stroke="#0d7377" stroke-width="2"/>
+                <line x1="15" y1="75" x2="35" y2="55" stroke="#0d7377" stroke-width="1.2" stroke-dasharray="3,3"/>
+                <line x1="35" y1="55" x2="80" y2="55" stroke="#0d7377" stroke-width="1.2" stroke-dasharray="3,3"/>
+                <line x1="35" y1="55" x2="35" y2="10" stroke="#0d7377" stroke-width="1.2" stroke-dasharray="3,3"/>
+                <text x="35" y="55" font-family="DM Sans" font-size="10" fill="#0d7377" font-weight="700" dx="2" dy="-4">l</text>
+                <text x="15" y="54" font-family="DM Sans" font-size="10" fill="#0d7377" font-weight="700" dx="-10">l</text>
+                <text x="46" y="28" font-family="DM Sans" font-size="10" fill="#0d7377" font-weight="700">l</text>
+              </svg>
+            </td>
+            <td>Sólido</td>
+            <td class="formula-cell">V = l³</td>
+            <td style="font-size:13px;">A_t = 6l² &nbsp;|&nbsp; d = l√3</td>
+          </tr>
+
+          <!-- PRISMA -->
+          <tr>
+            <td>Prisma rectangular</td>
+            <td class="diag-cell">
+              <svg width="110" height="90" viewBox="0 0 110 90">
+                <polygon points="8,38 70,38 70,82 8,82" fill="#FCE8E0" stroke="#b5451b" stroke-width="2"/>
+                <polygon points="8,38 28,12 90,12 70,38" fill="#F5D5C8" stroke="#b5451b" stroke-width="2"/>
+                <polygon points="70,38 90,12 90,56 70,82" fill="#EAC0AD" stroke="#b5451b" stroke-width="2"/>
+                <line x1="8" y1="82" x2="28" y2="56" stroke="#b5451b" stroke-width="1.2" stroke-dasharray="3,3"/>
+                <line x1="28" y1="56" x2="90" y2="56" stroke="#b5451b" stroke-width="1.2" stroke-dasharray="3,3"/>
+                <line x1="28" y1="56" x2="28" y2="12" stroke="#b5451b" stroke-width="1.2" stroke-dasharray="3,3"/>
+                <text x="38" y="63" font-family="DM Sans" font-size="10" fill="#b5451b" font-weight="700">l</text>
+                <text x="78" y="38" font-family="DM Sans" font-size="10" fill="#b5451b" font-weight="700">h</text>
+                <text x="45" y="22" font-family="DM Sans" font-size="10" fill="#b5451b" font-weight="700">a</text>
+              </svg>
+            </td>
+            <td>Sólido</td>
+            <td class="formula-cell">V = l·a·h</td>
+            <td style="font-size:13px;">A_t = 2(la+lh+ah)</td>
+          </tr>
+
+          <!-- CILINDRO -->
+          <tr>
+            <td>Cilindro</td>
+            <td class="diag-cell">
+              <svg width="80" height="100" viewBox="0 0 80 100">
+                <ellipse cx="40" cy="80" rx="30" ry="10" fill="#EDE5F8" stroke="#5c3d8f" stroke-width="2"/>
+                <rect x="10" y="25" width="60" height="55" fill="#EDE5F8"/>
+                <line x1="10" y1="25" x2="10" y2="80" stroke="#5c3d8f" stroke-width="2"/>
+                <line x1="70" y1="25" x2="70" y2="80" stroke="#5c3d8f" stroke-width="2"/>
+                <ellipse cx="40" cy="25" rx="30" ry="10" fill="#E2D5F5" stroke="#5c3d8f" stroke-width="2"/>
+                <line x1="40" y1="25" x2="70" y2="25" stroke="#5c3d8f" stroke-width="2"/>
+                <text x="52" y="20" font-family="DM Sans" font-size="11" fill="#5c3d8f" font-weight="700">r</text>
+                <line x1="74" y1="27" x2="74" y2="78" stroke="#5c3d8f" stroke-width="1.5"/>
+                <line x1="71" y1="27" x2="77" y2="27" stroke="#5c3d8f" stroke-width="1.5"/>
+                <line x1="71" y1="78" x2="77" y2="78" stroke="#5c3d8f" stroke-width="1.5"/>
+                <text x="78" y="55" font-family="DM Sans" font-size="11" fill="#5c3d8f" font-weight="700">h</text>
+              </svg>
+            </td>
+            <td>Sólido</td>
+            <td class="formula-cell">V = π·r²·h</td>
+            <td style="font-size:13px;">A_lat = 2πrh &nbsp;|&nbsp; A_t = 2πr(r+h)</td>
+          </tr>
+
+          <!-- ESFERA -->
+          <tr>
+            <td>Esfera</td>
+            <td class="diag-cell">
+              <svg width="90" height="90" viewBox="0 0 90 90">
+                <defs>
+                  <radialGradient id="sg" cx="38%" cy="35%" r="60%">
+                    <stop offset="0%" stop-color="#E2F0E7"/>
+                    <stop offset="100%" stop-color="#4a7c59" stop-opacity="0.55"/>
+                  </radialGradient>
+                </defs>
+                <circle cx="45" cy="45" r="38" fill="url(#sg)" stroke="#4a7c59" stroke-width="2.5"/>
+                <ellipse cx="45" cy="45" rx="38" ry="11" fill="none" stroke="#4a7c59" stroke-width="1.5" stroke-dasharray="4,3"/>
+                <circle cx="45" cy="45" r="3" fill="#4a7c59"/>
+                <line x1="45" y1="45" x2="83" y2="45" stroke="#4a7c59" stroke-width="2"/>
+                <text x="61" y="40" font-family="DM Sans" font-size="11" fill="#4a7c59" font-weight="700">r</text>
+              </svg>
+            </td>
+            <td>Sólido</td>
+            <td class="formula-cell">V = (4/3)·π·r³</td>
+            <td style="font-size:13px;">A = 4πr²</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 02 FIGURAS PLANAS ===== -->
+<section class="section" id="planas">
+  <div class="section-header">
+    <div class="section-number">02</div>
+    <div class="section-title-group">
+      <h2>Área de Figuras Planas</h2>
+      <p>Mg. Rodrigo F. Ricardo C. · Conceptos, fórmulas y ejemplos aplicados</p>
+    </div>
+  </div>
+
+  <div class="concept">
+    <div class="concept-tag">Concepto de Área</div>
+    <p>El <strong>área</strong> de una figura plana es la medida de la superficie que ocupa esa figura en el plano. Se expresa en unidades cuadradas (cm², m², km²). El área cuantifica la extensión bidimensional de cualquier región cerrada.</p>
+  </div>
+
+  <div class="tabs" id="planas-tabs">
+    <div class="tab active" onclick="switchTab(event,'planas','cuadrado')">⬛ Cuadrado</div>
+    <div class="tab" onclick="switchTab(event,'planas','rectangulo')">▬ Rectángulo</div>
+    <div class="tab" onclick="switchTab(event,'planas','triangulo')">△ Triángulo</div>
+    <div class="tab" onclick="switchTab(event,'planas','circulo')">⭕ Círculo</div>
+  </div>
+
+  <div class="tab-content active" id="planas-cuadrado">
+    <div class="grid-2">
+      <div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:14px;">El Cuadrado</h3>
+        <p style="font-size:14px;color:#444;line-height:1.8;margin-bottom:14px;">Polígono regular de cuatro lados iguales y cuatro ángulos rectos (90°). Es caso especial del rectángulo con b = h = l.</p>
+        <div class="formula"><span class="label">Fórmulas</span><div class="eq">A = l²</div><div class="where">P = 4l &nbsp;|&nbsp; d = l√2</div></div>
+      </div>
+      <div>
+        <div class="example">
+          <div class="ex-title">📋 Ejemplo</div>
+          <p style="font-size:14px;margin-bottom:12px;"><strong>Baldosas cuadradas de 45 cm, piso de 12 m². ¿Cuántas se necesitan?</strong></p>
+          <div class="step"><div class="step-n">1</div><div class="step-body">l = 0.45 m</div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><span class="math">A = (0.45)² = 0.2025 m²</span></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-body"><span class="math">N = 12/0.2025 ≈ 60 baldosas</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="planas-rectangulo">
+    <div class="grid-2">
+      <div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:14px;">El Rectángulo</h3>
+        <p style="font-size:14px;color:#444;line-height:1.8;margin-bottom:14px;">Paralelogramo con cuatro ángulos rectos. Sus lados opuestos son paralelos e iguales. Se define con base (b) y altura (h).</p>
+        <div class="formula"><span class="label">Fórmulas</span><div class="eq">A = b × h</div><div class="where">P = 2(b+h) &nbsp;|&nbsp; d = √(b²+h²)</div></div>
+      </div>
+      <div>
+        <div class="example">
+          <div class="ex-title">📋 Ejemplo</div>
+          <p style="font-size:14px;margin-bottom:12px;"><strong>Sala 8.5 m × 5.2 m, paredes de 2.8 m. ¿Área a pintar?</strong></p>
+          <div class="step"><div class="step-n">1</div><div class="step-body">Paredes largas: <span class="math">2×(8.5×2.8) = 47.6 m²</span></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body">Paredes cortas: <span class="math">2×(5.2×2.8) = 29.12 m²</span></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-body"><strong style="color:var(--teal);">Total = 76.72 m²</strong></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="planas-triangulo">
+    <div class="grid-2">
+      <div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:14px;">El Triángulo</h3>
+        <p style="font-size:14px;color:#444;line-height:1.8;margin-bottom:14px;">Polígono de 3 lados. Su área es la mitad del producto base por altura perpendicular. Tipos: equilátero, isósceles, escaleno, rectángulo.</p>
+        <div class="formula"><span class="label">Fórmulas</span><div class="eq">A = (b × h) / 2</div><div class="where">Herón: s=(a+b+c)/2 → A=√[s(s-a)(s-b)(s-c)]</div></div>
+      </div>
+      <div>
+        <div class="example">
+          <div class="ex-title">📋 Ejemplo</div>
+          <p style="font-size:14px;margin-bottom:12px;"><strong>Terreno b = 24 m, h = 15 m a $180.000/m². ¿Valor?</strong></p>
+          <div class="step"><div class="step-n">1</div><div class="step-body"><span class="math">A = (24×15)/2 = 180 m²</span></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><span class="math">Valor = 180×$180.000 = $32.400.000</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="planas-circulo">
+    <div class="grid-2">
+      <div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:14px;">La Circunferencia y el Círculo</h3>
+        <p style="font-size:14px;color:#444;line-height:1.8;margin-bottom:14px;">La <strong>circunferencia</strong> es el conjunto de puntos equidistantes del centro. El <strong>círculo</strong> es la región encerrada. π ≈ 3.14159...</p>
+        <div class="formula"><span class="label">Fórmulas</span><div class="eq">A = π × r²</div><div class="where">C = 2πr &nbsp;|&nbsp; d = 2r</div></div>
+      </div>
+      <div>
+        <div class="example">
+          <div class="ex-title">📋 Ejemplo</div>
+          <p style="font-size:14px;margin-bottom:12px;"><strong>Piscina circular d = 10 m. ¿Área? ¿Borde?</strong></p>
+          <div class="step"><div class="step-n">1</div><div class="step-body">r = 5 m</div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><span class="math">A = π×25 ≈ 78.54 m²</span></div></div>
+          <div class="step"><div class="step-n">3</div><div class="step-body"><span class="math">C = 2π×5 ≈ 31.42 m</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 03 SÓLIDOS ===== -->
+<section class="section" id="solidos">
+  <div class="section-header">
+    <div class="section-number">03</div>
+    <div class="section-title-group">
+      <h2>Volumen de Sólidos Geométricos</h2>
+      <p>Mg. Rodrigo F. Ricardo C. · Conceptos, fórmulas y ejemplos aplicados</p>
+    </div>
+  </div>
+
+  <div class="concept">
+    <div class="concept-tag">Concepto de Volumen</div>
+    <p>El <strong>volumen</strong> es la medida del espacio tridimensional que ocupa un sólido. Se expresa en unidades cúbicas (cm³, m³). Fundamental en problemas de capacidad, densidad, arquitectura e ingeniería.</p>
+  </div>
+
+  <div class="tabs" id="solidos-tabs">
+    <div class="tab active" onclick="switchTab(event,'solidos','cubo')">⬛ Cubo</div>
+    <div class="tab" onclick="switchTab(event,'solidos','prisma')">📦 Prisma</div>
+    <div class="tab" onclick="switchTab(event,'solidos','cilindro')">🥫 Cilindro</div>
+    <div class="tab" onclick="switchTab(event,'solidos','esfera')">🌐 Esfera</div>
+  </div>
+
+  <div class="tab-content active" id="solidos-cubo">
+    <div class="grid-2">
+      <div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:14px;">El Cubo</h3>
+        <p style="font-size:14px;color:#444;line-height:1.8;">Prisma regular con 6 caras cuadradas congruentes, 12 aristas iguales y 8 vértices. Hexaedro regular platónico.</p>
+        <div class="formula"><span class="label">Fórmulas</span><div class="eq">V = l³</div><div class="where">A_total = 6l² &nbsp;|&nbsp; d = l√3 &nbsp;|&nbsp; 1 dm³ = 1 L</div></div>
+      </div>
+      <div>
+        <div class="example">
+          <div class="ex-title">📋 Ejemplo</div>
+          <p style="font-size:14px;margin-bottom:12px;"><strong>Caja cúbica l = 30 cm. ¿Litros? ¿Madera?</strong></p>
+          <div class="step"><div class="step-n">1</div><div class="step-body"><span class="math">V = 30³ = 27.000 cm³ = 27 L</span></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><span class="math">A = 6×900 = 5.400 cm²</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="solidos-prisma">
+    <div class="grid-2">
+      <div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:14px;">Prisma Rectangular (Ortoedro)</h3>
+        <p style="font-size:14px;color:#444;line-height:1.8;">Tiene 6 caras rectangulares y tres dimensiones: largo (l), ancho (a) y alto (h). El cubo es su caso especial.</p>
+        <div class="formula"><span class="label">Fórmulas</span><div class="eq">V = l × a × h</div><div class="where">A_total = 2(la+lh+ah)</div></div>
+      </div>
+      <div>
+        <div class="example">
+          <div class="ex-title">📋 Ejemplo</div>
+          <p style="font-size:14px;margin-bottom:12px;"><strong>Piscina 12×6×1.5 m. ¿Litros?</strong></p>
+          <div class="step"><div class="step-n">1</div><div class="step-body"><span class="math">V = 12×6×1.5 = 108 m³</span></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><strong style="color:var(--teal);">108.000 litros</strong></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="solidos-cilindro">
+    <div class="grid-2">
+      <div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:14px;">El Cilindro</h3>
+        <p style="font-size:14px;color:#444;line-height:1.8;">Dos bases circulares paralelas e iguales unidas por una superficie lateral. Volumen = área base × altura.</p>
+        <div class="formula"><span class="label">Fórmulas</span><div class="eq">V = π × r² × h</div><div class="where">A_lat = 2πrh &nbsp;|&nbsp; A_total = 2πr(r+h)</div></div>
+      </div>
+      <div>
+        <div class="example">
+          <div class="ex-title">📋 Ejemplo</div>
+          <p style="font-size:14px;margin-bottom:12px;"><strong>Tanque r = 2 m, h = 5 m. ¿Litros y material?</strong></p>
+          <div class="step"><div class="step-n">1</div><div class="step-body"><span class="math">V = π×4×5 = 20π ≈ 62.83 m³ → 62.830 L</span></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><span class="math">A = 2π×2×7 = 28π ≈ 87.96 m²</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="solidos-esfera">
+    <div class="grid-2">
+      <div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:14px;">La Esfera</h3>
+        <p style="font-size:14px;color:#444;line-height:1.8;">Lugar geométrico de todos los puntos del espacio equidistantes del centro. Mayor volumen para una superficie dada.</p>
+        <div class="formula"><span class="label">Fórmulas</span><div class="eq">V = (4/3) × π × r³</div><div class="where">A = 4πr²</div></div>
+      </div>
+      <div>
+        <div class="example">
+          <div class="ex-title">📋 Ejemplo</div>
+          <p style="font-size:14px;margin-bottom:12px;"><strong>Tanque esférico r = 3 m. ¿Volumen y pintura?</strong></p>
+          <div class="step"><div class="step-n">1</div><div class="step-body"><span class="math">V = (4/3)π×27 = 36π ≈ 113.10 m³</span></div></div>
+          <div class="step"><div class="step-n">2</div><div class="step-body"><span class="math">A = 4π×9 = 36π ≈ 113.10 m²</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 04 CALCULADORAS INTERACTIVAS CON SLIDERS ===== -->
+<section class="section" id="calculadoras">
+  <div class="section-header">
+    <div class="section-number">04</div>
+    <div class="section-title-group">
+      <h2>Calculadoras Interactivas con Deslizadores</h2>
+      <p>Mg. Rodrigo F. Ricardo C. · Manipula las medidas y observa la figura en tiempo real</p>
+    </div>
+  </div>
+
+  <!-- CALC FIGURAS PLANAS -->
+  <div class="interactive" style="background:linear-gradient(135deg,#0d7377 0%,#085558 100%);">
+    <h3>Figuras Planas — Área</h3>
+    <p class="sub">Mueve los deslizadores y la figura se actualiza en tiempo real</p>
+    <div class="select-group" style="max-width:280px;">
+      <label>Figura</label>
+      <select id="plana-sel" onchange="setupPlana()">
+        <option value="cuadrado">Cuadrado</option>
+        <option value="rectangulo">Rectángulo</option>
+        <option value="triangulo">Triángulo</option>
+        <option value="circulo">Círculo</option>
+      </select>
+    </div>
+    <div class="inter-body">
+      <div class="slider-panel" id="plana-sliders"></div>
+      <div class="figure-panel" id="plana-fig-panel">
+        <svg id="plana-svg" width="220" height="220" viewBox="0 0 220 220"></svg>
+      </div>
+    </div>
+    <div class="result-box" id="plana-res"><div class="rl">Resultado</div><div class="rv" id="plana-rv">—</div></div>
+  </div>
+
+  <!-- CALC SÓLIDOS -->
+  <div class="interactive" style="background:linear-gradient(135deg,#5c3d8f 0%,#3f2760 100%);">
+    <h3>Sólidos Geométricos — Volumen</h3>
+    <p class="sub">Mueve los deslizadores y observa cómo cambia la figura</p>
+    <div class="select-group" style="max-width:280px;">
+      <label>Sólido</label>
+      <select id="solido-sel" onchange="setupSolido()">
+        <option value="cubo">Cubo</option>
+        <option value="prisma">Prisma Rectangular</option>
+        <option value="cilindro">Cilindro</option>
+        <option value="esfera">Esfera</option>
+      </select>
+    </div>
+    <div class="inter-body">
+      <div class="slider-panel" id="solido-sliders"></div>
+      <div class="figure-panel" id="solido-fig-panel">
+        <svg id="solido-svg" width="220" height="220" viewBox="0 0 220 220"></svg>
+      </div>
+    </div>
+    <div class="result-box" id="solido-res"><div class="rl">Resultado</div><div class="rv" id="solido-rv">—</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 05 ACTIVIDADES ===== -->
+<section class="section" id="actividades">
+  <div class="section-header">
+    <div class="section-number">05</div>
+    <div class="section-title-group">
+      <h2>Actividades para Verificar el Aprendizaje</h2>
+      <p>Mg. Rodrigo F. Ricardo C. · Resuelve y verifica cada ejercicio</p>
+    </div>
+  </div>
+
+  <div class="activity">
+    <h4>Actividad 1 – Área de Figuras Planas</h4>
+    <ol>
+      <li>Un cuadrado tiene perímetro de 48 cm. ¿Cuál es su área?</li>
+      <li>Una cancha rectangular mide 40 m × 20 m. ¿Cuál es su área?</li>
+      <li>Un triángulo tiene base 10 m y altura 8 m. ¿Cuál es su área?</li>
+      <li>Un jardín circular tiene radio 7 m. ¿Cuánto césped se necesita? (π ≈ 3.14159)</li>
+    </ol>
+    <button class="verify-btn" onclick="toggleAnswer('act1')">Ver respuestas ✓</button>
+    <button class="calc-toggle-btn" onclick="toggleCalc('act1-calc')">🧮 Calculadora científica</button>
+    <div class="calc-wrap" id="act1-calc">
+      <div class="calc-display">
+        <div class="calc-expr" id="act1-calc-expr"></div>
+        <div class="calc-result" id="act1-calc-res">0</div>
+      </div>
+      <div class="calc-grid">
+        <!-- Row 1: fn -->
+        <button class="cb cb-fn" onclick="calcFn('act1-calc','sin')">sin</button>
+        <button class="cb cb-fn" onclick="calcFn('act1-calc','cos')">cos</button>
+        <button class="cb cb-fn" onclick="calcFn('act1-calc','tan')">tan</button>
+        <button class="cb cb-fn" onclick="calcFn('act1-calc','log')">log</button>
+        <button class="cb cb-fn" onclick="calcFn('act1-calc','ln')">ln</button>
+        <!-- Row 2: fn -->
+        <button class="cb cb-fn" onclick="calcFn('act1-calc','sqrt')">√</button>
+        <button class="cb cb-fn" onclick="calcFn('act1-calc','sq')">x²</button>
+        <button class="cb cb-fn" onclick="calcFn('act1-calc','cube')">x³</button>
+        <button class="cb cb-fn" onclick="calcFn('act1-calc','inv')">1/x</button>
+        <button class="cb cb-fn" onclick="calcFn('act1-calc','pi')">π</button>
+        <!-- Row 3: fn + ops -->
+        <button class="cb cb-fn" onclick="calcFn('act1-calc','paren-open')">(</button>
+        <button class="cb cb-fn" onclick="calcFn('act1-calc','paren-close')">)</button>
+        <button class="cb cb-fn" onclick="calcFn('act1-calc','pow')">xʸ</button>
+        <button class="cb cb-fn" onclick="calcFn('act1-calc','percent')">%</button>
+        <button class="cb cb-fn" onclick="calcFn('act1-calc','abs')">|x|</button>
+        <!-- Row 4: numbers + ops -->
+        <button class="cb cb-ac" onclick="calcAC('act1-calc')">AC</button>
+        <button class="cb cb-clr" onclick="calcDel('act1-calc')">⌫</button>
+        <button class="cb cb-op" onclick="calcPush('act1-calc','/')">÷</button>
+        <button class="cb cb-op" onclick="calcPush('act1-calc','*')">×</button>
+        <button class="cb cb-op" onclick="calcPush('act1-calc','-')">−</button>
+        <!-- Row 5 -->
+        <button class="cb cb-num" onclick="calcPush('act1-calc','7')">7</button>
+        <button class="cb cb-num" onclick="calcPush('act1-calc','8')">8</button>
+        <button class="cb cb-num" onclick="calcPush('act1-calc','9')">9</button>
+        <button class="cb cb-op cb-span2" onclick="calcPush('act1-calc','+')">+</button>
+        <!-- Row 6 -->
+        <button class="cb cb-num" onclick="calcPush('act1-calc','4')">4</button>
+        <button class="cb cb-num" onclick="calcPush('act1-calc','5')">5</button>
+        <button class="cb cb-num" onclick="calcPush('act1-calc','6')">6</button>
+        <button class="cb cb-fn cb-span2" onclick="calcFn('act1-calc','neg')">±</button>
+        <!-- Row 7 -->
+        <button class="cb cb-num" onclick="calcPush('act1-calc','1')">1</button>
+        <button class="cb cb-num" onclick="calcPush('act1-calc','2')">2</button>
+        <button class="cb cb-num" onclick="calcPush('act1-calc','3')">3</button>
+        <button class="cb cb-eq cb-span2" onclick="calcEquals('act1-calc')" style="height:auto;grid-row:span 2;">=</button>
+        <!-- Row 8 -->
+        <button class="cb cb-num cb-span2" onclick="calcPush('act1-calc','0')">0</button>
+        <button class="cb cb-dot" onclick="calcPush('act1-calc','.')">.</button>
+      </div>
+      <div class="calc-history" id="act1-calc-hist"></div>
+    </div>
+    <div class="answer-area" id="act1">
+      <strong>1.</strong> l = 48/4 = 12 cm → A = 12² = <strong>144 cm²</strong><br><br>
+      <strong>2.</strong> A = 40×20 = <strong>800 m²</strong><br><br>
+      <strong>3.</strong> A = (10×8)/2 = <strong>40 m²</strong><br><br>
+      <strong>4.</strong> A = π×49 ≈ <strong>153.94 m²</strong>
+    </div>
+  </div>
+
+  <div class="activity">
+    <h4>Actividad 2 – Problemas de Contexto Real</h4>
+    <ol>
+      <li>Cuarto cuadrado de 6 m con moqueta a $35.000/m². ¿Costo total?</li>
+      <li>Ventana de 1.2 m × 0.8 m con vidrio a $85.000/m². ¿Costo del vidrio?</li>
+      <li>Logo triangular b = 30 cm, h = 24 cm. 500 logos. ¿Cuántos m² cubren?</li>
+    </ol>
+    <button class="verify-btn" onclick="toggleAnswer('act2')">Ver respuestas ✓</button>
+    <button class="calc-toggle-btn" onclick="toggleCalc('act2-calc')">🧮 Calculadora científica</button>
+    <div class="calc-wrap" id="act2-calc">
+      <div class="calc-display">
+        <div class="calc-expr" id="act2-calc-expr"></div>
+        <div class="calc-result" id="act2-calc-res">0</div>
+      </div>
+      <div class="calc-grid">
+        <!-- Row 1: fn -->
+        <button class="cb cb-fn" onclick="calcFn('act2-calc','sin')">sin</button>
+        <button class="cb cb-fn" onclick="calcFn('act2-calc','cos')">cos</button>
+        <button class="cb cb-fn" onclick="calcFn('act2-calc','tan')">tan</button>
+        <button class="cb cb-fn" onclick="calcFn('act2-calc','log')">log</button>
+        <button class="cb cb-fn" onclick="calcFn('act2-calc','ln')">ln</button>
+        <!-- Row 2: fn -->
+        <button class="cb cb-fn" onclick="calcFn('act2-calc','sqrt')">√</button>
+        <button class="cb cb-fn" onclick="calcFn('act2-calc','sq')">x²</button>
+        <button class="cb cb-fn" onclick="calcFn('act2-calc','cube')">x³</button>
+        <button class="cb cb-fn" onclick="calcFn('act2-calc','inv')">1/x</button>
+        <button class="cb cb-fn" onclick="calcFn('act2-calc','pi')">π</button>
+        <!-- Row 3: fn + ops -->
+        <button class="cb cb-fn" onclick="calcFn('act2-calc','paren-open')">(</button>
+        <button class="cb cb-fn" onclick="calcFn('act2-calc','paren-close')">)</button>
+        <button class="cb cb-fn" onclick="calcFn('act2-calc','pow')">xʸ</button>
+        <button class="cb cb-fn" onclick="calcFn('act2-calc','percent')">%</button>
+        <button class="cb cb-fn" onclick="calcFn('act2-calc','abs')">|x|</button>
+        <!-- Row 4: numbers + ops -->
+        <button class="cb cb-ac" onclick="calcAC('act2-calc')">AC</button>
+        <button class="cb cb-clr" onclick="calcDel('act2-calc')">⌫</button>
+        <button class="cb cb-op" onclick="calcPush('act2-calc','/')">÷</button>
+        <button class="cb cb-op" onclick="calcPush('act2-calc','*')">×</button>
+        <button class="cb cb-op" onclick="calcPush('act2-calc','-')">−</button>
+        <!-- Row 5 -->
+        <button class="cb cb-num" onclick="calcPush('act2-calc','7')">7</button>
+        <button class="cb cb-num" onclick="calcPush('act2-calc','8')">8</button>
+        <button class="cb cb-num" onclick="calcPush('act2-calc','9')">9</button>
+        <button class="cb cb-op cb-span2" onclick="calcPush('act2-calc','+')">+</button>
+        <!-- Row 6 -->
+        <button class="cb cb-num" onclick="calcPush('act2-calc','4')">4</button>
+        <button class="cb cb-num" onclick="calcPush('act2-calc','5')">5</button>
+        <button class="cb cb-num" onclick="calcPush('act2-calc','6')">6</button>
+        <button class="cb cb-fn cb-span2" onclick="calcFn('act2-calc','neg')">±</button>
+        <!-- Row 7 -->
+        <button class="cb cb-num" onclick="calcPush('act2-calc','1')">1</button>
+        <button class="cb cb-num" onclick="calcPush('act2-calc','2')">2</button>
+        <button class="cb cb-num" onclick="calcPush('act2-calc','3')">3</button>
+        <button class="cb cb-eq cb-span2" onclick="calcEquals('act2-calc')" style="height:auto;grid-row:span 2;">=</button>
+        <!-- Row 8 -->
+        <button class="cb cb-num cb-span2" onclick="calcPush('act2-calc','0')">0</button>
+        <button class="cb cb-dot" onclick="calcPush('act2-calc','.')">.</button>
+      </div>
+      <div class="calc-history" id="act2-calc-hist"></div>
+    </div>
+    <div class="answer-area" id="act2">
+      <strong>1.</strong> A = 36 m² → <strong>$1.260.000</strong><br><br>
+      <strong>2.</strong> A = 0.96 m² → <strong>$81.600</strong><br><br>
+      <strong>3.</strong> A_uno = 360 cm² → 500×360 = 180.000 cm² = <strong>18 m²</strong>
+    </div>
+  </div>
+
+  <div class="activity">
+    <h4>Actividad 3 – Volumen de Sólidos</h4>
+    <ol>
+      <li>Un dado cúbico tiene aristas de 2 cm. ¿Volumen?</li>
+      <li>Nevera 60×70×140 cm. ¿Litros de capacidad?</li>
+      <li>Lata: radio 3.5 cm, altura 12 cm. ¿Cuántos ml contiene?</li>
+      <li>Pelota de fútbol con radio 11 cm. ¿Volumen?</li>
+    </ol>
+    <button class="verify-btn" onclick="toggleAnswer('act3')">Ver respuestas ✓</button>
+    <button class="calc-toggle-btn" onclick="toggleCalc('act3-calc')">🧮 Calculadora científica</button>
+    <div class="calc-wrap" id="act3-calc">
+      <div class="calc-display">
+        <div class="calc-expr" id="act3-calc-expr"></div>
+        <div class="calc-result" id="act3-calc-res">0</div>
+      </div>
+      <div class="calc-grid">
+        <!-- Row 1: fn -->
+        <button class="cb cb-fn" onclick="calcFn('act3-calc','sin')">sin</button>
+        <button class="cb cb-fn" onclick="calcFn('act3-calc','cos')">cos</button>
+        <button class="cb cb-fn" onclick="calcFn('act3-calc','tan')">tan</button>
+        <button class="cb cb-fn" onclick="calcFn('act3-calc','log')">log</button>
+        <button class="cb cb-fn" onclick="calcFn('act3-calc','ln')">ln</button>
+        <!-- Row 2: fn -->
+        <button class="cb cb-fn" onclick="calcFn('act3-calc','sqrt')">√</button>
+        <button class="cb cb-fn" onclick="calcFn('act3-calc','sq')">x²</button>
+        <button class="cb cb-fn" onclick="calcFn('act3-calc','cube')">x³</button>
+        <button class="cb cb-fn" onclick="calcFn('act3-calc','inv')">1/x</button>
+        <button class="cb cb-fn" onclick="calcFn('act3-calc','pi')">π</button>
+        <!-- Row 3: fn + ops -->
+        <button class="cb cb-fn" onclick="calcFn('act3-calc','paren-open')">(</button>
+        <button class="cb cb-fn" onclick="calcFn('act3-calc','paren-close')">)</button>
+        <button class="cb cb-fn" onclick="calcFn('act3-calc','pow')">xʸ</button>
+        <button class="cb cb-fn" onclick="calcFn('act3-calc','percent')">%</button>
+        <button class="cb cb-fn" onclick="calcFn('act3-calc','abs')">|x|</button>
+        <!-- Row 4: numbers + ops -->
+        <button class="cb cb-ac" onclick="calcAC('act3-calc')">AC</button>
+        <button class="cb cb-clr" onclick="calcDel('act3-calc')">⌫</button>
+        <button class="cb cb-op" onclick="calcPush('act3-calc','/')">÷</button>
+        <button class="cb cb-op" onclick="calcPush('act3-calc','*')">×</button>
+        <button class="cb cb-op" onclick="calcPush('act3-calc','-')">−</button>
+        <!-- Row 5 -->
+        <button class="cb cb-num" onclick="calcPush('act3-calc','7')">7</button>
+        <button class="cb cb-num" onclick="calcPush('act3-calc','8')">8</button>
+        <button class="cb cb-num" onclick="calcPush('act3-calc','9')">9</button>
+        <button class="cb cb-op cb-span2" onclick="calcPush('act3-calc','+')">+</button>
+        <!-- Row 6 -->
+        <button class="cb cb-num" onclick="calcPush('act3-calc','4')">4</button>
+        <button class="cb cb-num" onclick="calcPush('act3-calc','5')">5</button>
+        <button class="cb cb-num" onclick="calcPush('act3-calc','6')">6</button>
+        <button class="cb cb-fn cb-span2" onclick="calcFn('act3-calc','neg')">±</button>
+        <!-- Row 7 -->
+        <button class="cb cb-num" onclick="calcPush('act3-calc','1')">1</button>
+        <button class="cb cb-num" onclick="calcPush('act3-calc','2')">2</button>
+        <button class="cb cb-num" onclick="calcPush('act3-calc','3')">3</button>
+        <button class="cb cb-eq cb-span2" onclick="calcEquals('act3-calc')" style="height:auto;grid-row:span 2;">=</button>
+        <!-- Row 8 -->
+        <button class="cb cb-num cb-span2" onclick="calcPush('act3-calc','0')">0</button>
+        <button class="cb cb-dot" onclick="calcPush('act3-calc','.')">.</button>
+      </div>
+      <div class="calc-history" id="act3-calc-hist"></div>
+    </div>
+    <div class="answer-area" id="act3">
+      <strong>1.</strong> V = 2³ = <strong>8 cm³</strong><br><br>
+      <strong>2.</strong> V = 588.000 cm³ = <strong>588 L</strong><br><br>
+      <strong>3.</strong> V = π×12.25×12 ≈ <strong>461.8 ml</strong><br><br>
+      <strong>4.</strong> V = (4/3)π×1331 ≈ <strong>5.575 cm³</strong>
+    </div>
+  </div>
+
+  <div class="activity">
+    <h4>Actividad 4 – Desafío Integrador</h4>
+    <ol>
+      <li>Silo cilíndrico d = 4 m, h = 10 m, más cúpula hemisférica r = 2 m. ¿Volumen total?</li>
+      <li>Cubo de hielo arista 6 cm se derrite en cilindro de radio 5 cm. ¿Altura del agua?</li>
+    </ol>
+    <button class="verify-btn" onclick="toggleAnswer('act4')">Ver respuestas ✓</button>
+    <button class="calc-toggle-btn" onclick="toggleCalc('act4-calc')">🧮 Calculadora científica</button>
+    <div class="calc-wrap" id="act4-calc">
+      <div class="calc-display">
+        <div class="calc-expr" id="act4-calc-expr"></div>
+        <div class="calc-result" id="act4-calc-res">0</div>
+      </div>
+      <div class="calc-grid">
+        <!-- Row 1: fn -->
+        <button class="cb cb-fn" onclick="calcFn('act4-calc','sin')">sin</button>
+        <button class="cb cb-fn" onclick="calcFn('act4-calc','cos')">cos</button>
+        <button class="cb cb-fn" onclick="calcFn('act4-calc','tan')">tan</button>
+        <button class="cb cb-fn" onclick="calcFn('act4-calc','log')">log</button>
+        <button class="cb cb-fn" onclick="calcFn('act4-calc','ln')">ln</button>
+        <!-- Row 2: fn -->
+        <button class="cb cb-fn" onclick="calcFn('act4-calc','sqrt')">√</button>
+        <button class="cb cb-fn" onclick="calcFn('act4-calc','sq')">x²</button>
+        <button class="cb cb-fn" onclick="calcFn('act4-calc','cube')">x³</button>
+        <button class="cb cb-fn" onclick="calcFn('act4-calc','inv')">1/x</button>
+        <button class="cb cb-fn" onclick="calcFn('act4-calc','pi')">π</button>
+        <!-- Row 3: fn + ops -->
+        <button class="cb cb-fn" onclick="calcFn('act4-calc','paren-open')">(</button>
+        <button class="cb cb-fn" onclick="calcFn('act4-calc','paren-close')">)</button>
+        <button class="cb cb-fn" onclick="calcFn('act4-calc','pow')">xʸ</button>
+        <button class="cb cb-fn" onclick="calcFn('act4-calc','percent')">%</button>
+        <button class="cb cb-fn" onclick="calcFn('act4-calc','abs')">|x|</button>
+        <!-- Row 4: numbers + ops -->
+        <button class="cb cb-ac" onclick="calcAC('act4-calc')">AC</button>
+        <button class="cb cb-clr" onclick="calcDel('act4-calc')">⌫</button>
+        <button class="cb cb-op" onclick="calcPush('act4-calc','/')">÷</button>
+        <button class="cb cb-op" onclick="calcPush('act4-calc','*')">×</button>
+        <button class="cb cb-op" onclick="calcPush('act4-calc','-')">−</button>
+        <!-- Row 5 -->
+        <button class="cb cb-num" onclick="calcPush('act4-calc','7')">7</button>
+        <button class="cb cb-num" onclick="calcPush('act4-calc','8')">8</button>
+        <button class="cb cb-num" onclick="calcPush('act4-calc','9')">9</button>
+        <button class="cb cb-op cb-span2" onclick="calcPush('act4-calc','+')">+</button>
+        <!-- Row 6 -->
+        <button class="cb cb-num" onclick="calcPush('act4-calc','4')">4</button>
+        <button class="cb cb-num" onclick="calcPush('act4-calc','5')">5</button>
+        <button class="cb cb-num" onclick="calcPush('act4-calc','6')">6</button>
+        <button class="cb cb-fn cb-span2" onclick="calcFn('act4-calc','neg')">±</button>
+        <!-- Row 7 -->
+        <button class="cb cb-num" onclick="calcPush('act4-calc','1')">1</button>
+        <button class="cb cb-num" onclick="calcPush('act4-calc','2')">2</button>
+        <button class="cb cb-num" onclick="calcPush('act4-calc','3')">3</button>
+        <button class="cb cb-eq cb-span2" onclick="calcEquals('act4-calc')" style="height:auto;grid-row:span 2;">=</button>
+        <!-- Row 8 -->
+        <button class="cb cb-num cb-span2" onclick="calcPush('act4-calc','0')">0</button>
+        <button class="cb cb-dot" onclick="calcPush('act4-calc','.')">.</button>
+      </div>
+      <div class="calc-history" id="act4-calc-hist"></div>
+    </div>
+    <div class="answer-area" id="act4">
+      <strong>1.</strong> V_cil = π×4×10 = 40π ≈ 125.66 m³ &nbsp;|&nbsp; V_hemi = (2/3)π×8 ≈ 16.76 m³ → <strong>≈ 142.42 m³</strong><br><br>
+      <strong>2.</strong> V_cubo = 216 cm³ &nbsp;|&nbsp; 25πh = 216 → h ≈ <strong>2.75 cm</strong>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== 06 PRUEBA ICFES ===== -->
+<style>
+/* ---- PIN GATE ---- */
+#pin-gate{text-align:center;padding:60px 20px;}
+#pin-gate h3{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;margin-bottom:10px;}
+#pin-gate h3 span{color:var(--gold);}
+#pin-gate p{opacity:0.6;font-size:14px;margin-bottom:32px;line-height:1.7;}
+.student-form{max-width:600px;margin:0 auto 28px;}
+.student-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:600px){.student-fields{grid-template-columns:1fr;}}
+.sfield{display:flex;flex-direction:column;gap:6px;text-align:left;}
+.sfield label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;opacity:0.7;}
+.sfield input,.sfield select{
+  background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.22);
+  border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;
+  font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;
+  text-transform:uppercase;
+}
+.sfield input::placeholder{text-transform:none;opacity:0.4;}
+.sfield input:focus,.sfield select:focus{border-color:var(--gold);}
+.sfield select{text-transform:none;}
+.sfield select option{background:#0d5c60;color:#fff;text-transform:none;}
+.pin-field-wrap{display:flex;justify-content:center;gap:10px;margin-bottom:20px;}
+.pin-digit{
+  width:60px;height:72px;
+  background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.2);
+  border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:2rem;
+  font-weight:700;color:#fff;text-align:center;outline:none;caret-color:var(--gold);
+  transition:border-color .2s;
+}
+.pin-digit:focus{border-color:var(--gold);}
+#pin-error{color:#e74c3c;font-size:13px;margin-bottom:16px;min-height:20px;font-weight:600;}
+#pin-submit{background:var(--gold);color:var(--ink);border:none;border-radius:10px;
+  padding:14px 44px;font-size:16px;font-weight:700;cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:all .2s;}
+#pin-submit:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,151,76,0.35);}
+#pin-submit:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:none;}
+.lock-icon{font-size:3rem;margin-bottom:18px;display:block;}
+.pin-hint{margin-top:16px;font-size:12px;opacity:0.35;letter-spacing:1px;}
+
+/* ═══════════════════════ SCIENTIFIC CALCULATOR ═══════════════════════ */
+.calc-toggle-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--ink);color:var(--gold);
+  border:2px solid var(--gold);border-radius:8px;
+  padding:9px 18px;font-size:13px;font-weight:700;
+  cursor:pointer;margin-top:14px;transition:all .2s;
+  font-family:'DM Sans',sans-serif;letter-spacing:.5px;
+}
+.calc-toggle-btn:hover{background:var(--gold);color:var(--ink);}
+.calc-wrap{
+  margin-top:14px;display:none;
+  background:#1a1a2e;border-radius:14px;
+  padding:18px;border:1px solid #333;
+  box-shadow:0 8px 32px rgba(0,0,0,0.3);
+  max-width:340px;
+}
+.calc-wrap.open{display:block;animation:fadeIn .25s ease;}
+/* Display */
+.calc-display{
+  background:#0d0d1a;border-radius:10px;padding:12px 16px;
+  margin-bottom:12px;text-align:right;
+}
+.calc-expr{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  color:rgba(255,255,255,0.35);min-height:18px;margin-bottom:4px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.calc-result{
+  font-family:'JetBrains Mono',monospace;font-size:28px;
+  font-weight:700;color:#fff;min-height:36px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+/* Button grid */
+.calc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+.cb{
+  border:none;border-radius:8px;padding:0;height:42px;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;
+  cursor:pointer;transition:all .15s;display:flex;
+  align-items:center;justify-content:center;
+}
+.cb:active{transform:scale(0.93);}
+/* colour themes per button type */
+.cb-num  {background:#2a2a4a;color:#e8e8f0;}
+.cb-num:hover{background:#3a3a5a;}
+.cb-op   {background:#1e3a5f;color:#7ab8f5;}
+.cb-op:hover{background:#2a4a6f;}
+.cb-fn   {background:#1f2f1f;color:#7fd47f;}
+.cb-fn:hover{background:#2f3f2f;}
+.cb-eq   {background:var(--gold);color:#0d0d1a;font-size:16px;font-weight:900;}
+.cb-eq:hover{background:#e0aa5c;}
+.cb-clr  {background:#3d1a1a;color:#ff7070;}
+.cb-clr:hover{background:#4d2a2a;}
+.cb-ac   {background:#5a1010;color:#ffaaaa;font-weight:800;}
+.cb-ac:hover{background:#6a2020;}
+.cb-dot  {background:#2a2a4a;color:#e8e8f0;}
+.cb-pct  {background:#2a2a4a;color:#e8e8f0;}
+.cb-span2{grid-column:span 2;}
+.calc-history{
+  margin-top:10px;max-height:80px;overflow-y:auto;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:rgba(255,255,255,0.35);line-height:1.8;
+  border-top:1px solid rgba(255,255,255,0.08);padding-top:8px;
+}
+/* ═══════════════════════════════════════════════════════════════════════ */
+/* ---- Q IMAGE ---- */
+.q-figure{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:10px;padding:16px;
+  margin-bottom:16px;display:flex;
+  align-items:center;justify-content:center;
+  gap:20px;flex-wrap:wrap;
+}
+.q-figure svg{flex-shrink:0;}
+.q-figure-caption{font-size:12px;opacity:0.5;font-family:'JetBrains Mono',monospace;line-height:1.8;}
+/* version badge */
+#version-badge{
+  display:inline-block;background:rgba(201,151,76,0.2);
+  border:1px solid rgba(201,151,76,0.4);border-radius:6px;
+  padding:4px 16px;font-size:12px;font-weight:700;color:var(--gold);
+  letter-spacing:2px;margin-bottom:12px;
+}
+</style>
+
+<div class="quiz-section" id="prueba">
+  <div class="quiz-inner">
+    <div class="quiz-header">
+      <div style="display:inline-block;background:rgba(201,151,76,0.15);border:1px solid rgba(201,151,76,0.3);border-radius:4px;padding:6px 16px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;">Evaluación Final</div>
+      <h2>Prueba Tipo <span>ICFES</span></h2>
+      <p>Saber 11° · Matemáticas · Áreas y Volúmenes</p>
+      <p style="margin-top:6px;opacity:0.45;font-size:13px;">Mg. Rodrigo F. Ricardo C.</p>
+    </div>
+
+    <div class="quiz-meta">
+      <div class="quiz-meta-item"><div class="n">15</div><div class="l">Preguntas</div></div>
+      <div class="quiz-meta-item"><div class="n">35</div><div class="l">Minutos</div></div>
+      <div class="quiz-meta-item"><div class="n">3</div><div class="l">Competencias</div></div>
+    </div>
+
+    <!-- PIN GATE -->
+    <div id="pin-gate">
+      <span class="lock-icon">🔐</span>
+      <h3>Acceso a la <span>Prueba Final</span></h3>
+      <p>Completa tus datos y el PIN entregado por tu docente<br>para ingresar a la evaluación.</p>
+
+      <div class="student-form">
+        <div style="background:rgba(201,151,76,0.12);border:1px solid rgba(201,151,76,0.3);border-radius:10px;padding:13px 18px;margin-bottom:18px;font-size:13px;opacity:0.85;text-align:left;line-height:1.6;">
+          👥 Esta prueba se presenta en <strong>parejas</strong>. Ambos estudiantes deben registrar sus nombres. El resultado quedará guardado de forma <strong>individual</strong> para cada uno.
+        </div>
+        <div class="student-fields">
+          <div class="sfield" style="grid-column:span 2;">
+            <label>👤 Estudiante 1 — Apellidos y nombres completos</label>
+            <input type="text" id="st-name1" placeholder="APELLIDOS Y NOMBRES" oninput="this.value=this.value.toUpperCase()" autocomplete="off">
+          </div>
+          <div class="sfield" style="grid-column:span 2;">
+            <label>👤 Estudiante 2 — Apellidos y nombres completos</label>
+            <input type="text" id="st-name2" placeholder="APELLIDOS Y NOMBRES" oninput="this.value=this.value.toUpperCase()" autocomplete="off">
+          </div>
+          <div class="sfield" style="grid-column:span 2;">
+            <label>Grupo</label>
+            <select id="st-group">
+              <option value="">— Selecciona el grupo —</option>
+              <option value="Grupo 1">Grupo 1</option>
+              <option value="Grupo 2">Grupo 2</option>
+              <option value="Grupo 3">Grupo 3</option>
+              <option value="Grupo 4">Grupo 4</option>
+              <option value="Grupo 5">Grupo 5</option>
+              <option value="Grupo 6">Grupo 6</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-bottom:12px;font-size:13px;opacity:0.6;">Ingresa el PIN de 3 dígitos:</p>
+      <div class="pin-field-wrap">
+        <input class="pin-digit" type="password" maxlength="1" inputmode="numeric" id="pd0" oninput="pinInput(0)">
+        <input class="pin-digit" type="password" maxlength="1" inputmode="numeric" id="pd1" oninput="pinInput(1)">
+        <input class="pin-digit" type="password" maxlength="1" inputmode="numeric" id="pd2" oninput="pinInput(2)">
+      </div>
+      <div id="pin-error"></div>
+      <button id="pin-submit" onclick="checkPin()">Ingresar a la Prueba 🔓</button>
+      <div class="pin-hint">PIN entregado por Mg. Rodrigo F. Ricardo C.</div>
+    </div>
+
+    <!-- QUIZ CONTENT (hidden until PIN) -->
+    <div id="quiz-content" style="display:none;">
+      <div id="version-badge" style="display:none;">VERSIÓN ?</div>
+      <div style="text-align:center;margin-bottom:20px;">
+        <div id="student-name-display" style="font-size:14px;font-weight:600;opacity:0.75;letter-spacing:0.5px;line-height:1.8;"></div>
+      </div>
+
+      <div id="timer-section">
+        <button id="start-btn" onclick="startQuiz()">▶ Iniciar Prueba</button>
+        <div id="timer-display">
+          <div class="timer-ring">
+            <svg width="110" height="110" viewBox="0 0 110 110">
+              <circle class="bg" cx="55" cy="55" r="46"/>
+              <circle class="progress" id="timer-circle" cx="55" cy="55" r="46"
+                stroke-dasharray="289.03" stroke-dashoffset="0"/>
+            </svg>
+            <div id="timer-text">35:00</div>
+          </div>
+          <div id="timer-label">Tiempo restante</div>
+        </div>
+      </div>
+
+      <div class="competencias-info">
+        <h4>📊 Competencias ICFES evaluadas:</h4>
+        <strong>Razonamiento y argumentación</strong> · Justificar estrategias y procedimientos matemáticos. &nbsp;|&nbsp;
+        <strong>Comunicación, representación y modelación</strong> · Interpretar y producir representaciones matemáticas. &nbsp;|&nbsp;
+        <strong>Planteamiento y resolución de problemas</strong> · Formular y resolver problemas en contexto.
+      </div>
+
+      <div id="quiz-questions"></div>
+
+      <div class="quiz-controls">
+        <button class="btn-quiz" onclick="submitQuiz()" id="submit-btn" disabled>Enviar prueba</button>
+        <button class="btn-quiz secondary" id="finish-btn" onclick="finishReview()" style="display:none;">🏁 Terminar revisión</button>
+      </div>
+
+      <div id="quiz-score">
+        <div class="score-circle">
+          <div class="sn" id="score-num">0/15</div>
+          <div class="sl">puntaje</div>
+        </div>
+        <div class="feedback-text" id="feedback-text"></div>
+        <div class="feedback-sub" id="feedback-sub"></div>
+      </div>
+    </div><!-- /quiz-content -->
+  </div>
+</div>
+
+<footer>
+  <p>Secuencia Didáctica · Área y Volumen de Figuras Geométricas</p>
+  <p style="margin-top:6px;"><strong>Mg. Rodrigo F. Ricardo C.</strong> · Matemáticas · Grado 11°</p>
+  <p style="margin-top:8px;opacity:0.5;font-size:12px;">Diseñado con enfoque en las competencias Saber 11° del ICFES</p>
+</footer>
+
+<script>
+// ===================== TABS =====================
+function switchTab(e, group, id) {
+  document.querySelectorAll(`#${group}-tabs .tab`).forEach(t=>t.classList.remove('active'));
+  e.target.classList.add('active');
+  document.querySelectorAll(`[id^="${group}-"]`).forEach(c=>{if(c.classList.contains('tab-content')) c.classList.remove('active');});
+  document.getElementById(`${group}-${id}`).classList.add('active');
+}
+
+// ===================== SLIDER HELPERS =====================
+function makeSlider(id, label, min, max, val, cb) {
+  return `<div class="slider-group">
+    <label>${label} <span id="${id}-val">${val}</span></label>
+    <input type="range" id="${id}" min="${min}" max="${max}" value="${val}" step="0.1" oninput="document.getElementById('${id}-val').textContent=parseFloat(this.value).toFixed(1);${cb}">
+  </div>`;
+}
+function sv(id){return parseFloat(document.getElementById(id).value)||0;}
+
+// ===================== CALCULADORA FIGURAS PLANAS =====================
+const planaConfigs = {
+  cuadrado:{
+    sliders:()=>makeSlider('pl-l','Lado (l) — cm',0.5,8,4,'updatePlana()'),
+    calc:()=>{const l=sv('pl-l');return{area:(l*l).toFixed(3),extra:`P = ${(4*l).toFixed(3)} cm  |  d = ${(l*Math.SQRT2).toFixed(3)} cm`};},
+    draw:(svg)=>{
+      const l=sv('pl-l');const sc=Math.min(180/(l||1),22);const s=l*sc;
+      const ox=(220-s)/2,oy=(220-s)/2;
+      svg.innerHTML=`
+        <rect x="${ox}" y="${oy}" width="${s}" height="${s}" fill="#D6E4F0" stroke="#0d7377" stroke-width="2.5" rx="2"/>
+        <text x="${ox+s/2}" y="${oy+s/2+5}" text-anchor="middle" font-family="DM Sans" font-size="13" fill="#0d7377" font-weight="700">l = ${l.toFixed(1)} cm</text>
+        <text x="${ox+s/2}" y="${oy-10}" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#0d7377">l</text>
+        <text x="${ox-14}" y="${oy+s/2+4}" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#0d7377">l</text>`;
+    }
+  },
+  rectangulo:{
+    sliders:()=>makeSlider('pl-b','Base (b) — cm',0.5,8,6,'updatePlana()')+makeSlider('pl-h','Altura (h) — cm',0.5,8,3.5,'updatePlana()'),
+    calc:()=>{const b=sv('pl-b'),h=sv('pl-h');return{area:(b*h).toFixed(3),extra:`P = ${(2*(b+h)).toFixed(3)} cm  |  d = ${Math.sqrt(b*b+h*h).toFixed(3)} cm`};},
+    draw:(svg)=>{
+      const b=sv('pl-b'),h=sv('pl-h');
+      const sc=Math.min(180/(Math.max(b,h)||1),22);
+      const sw=b*sc,sh=h*sc,ox=(220-sw)/2,oy=(220-sh)/2;
+      svg.innerHTML=`
+        <rect x="${ox}" y="${oy}" width="${sw}" height="${sh}" fill="#FCE8E0" stroke="#b5451b" stroke-width="2.5" rx="2"/>
+        <text x="${ox+sw/2}" y="${oy+sh/2+5}" text-anchor="middle" font-family="DM Sans" font-size="12" fill="#b5451b" font-weight="700">${b.toFixed(1)}×${h.toFixed(1)}</text>
+        <text x="${ox+sw/2}" y="${oy-10}" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#b5451b">b = ${b.toFixed(1)}</text>
+        <text x="${ox-18}" y="${oy+sh/2+4}" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#b5451b" transform="rotate(-90,${ox-18},${oy+sh/2+4})">h = ${h.toFixed(1)}</text>`;
+    }
+  },
+  triangulo:{
+    sliders:()=>makeSlider('pl-b','Base (b) — cm',0.5,8,6,'updatePlana()')+makeSlider('pl-h','Altura (h) — cm',0.5,8,4,'updatePlana()'),
+    calc:()=>{const b=sv('pl-b'),h=sv('pl-h');return{area:((b*h)/2).toFixed(3),extra:`Semiperímetro ≈ depende de lados`};},
+    draw:(svg)=>{
+      const b=sv('pl-b'),h=sv('pl-h');
+      const sc=Math.min(170/(Math.max(b,h)||1),22);
+      const sw=b*sc,sh=h*sc;
+      const bx=(220-sw)/2,by=(220-sh)/2+sh;
+      svg.innerHTML=`
+        <polygon points="${bx+sw/2},${by-sh} ${bx},${by} ${bx+sw},${by}" fill="#EDE5F8" stroke="#5c3d8f" stroke-width="2.5"/>
+        <line x1="${bx+sw/2}" y1="${by-sh}" x2="${bx+sw/2}" y2="${by}" stroke="#5c3d8f" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <rect x="${bx+sw/2-5}" y="${by-10}" width="10" height="10" fill="none" stroke="#5c3d8f" stroke-width="1.5"/>
+        <text x="${bx+sw/2+8}" y="${by-sh/2+4}" font-family="DM Sans" font-size="11" fill="#5c3d8f" font-weight="700">h=${h.toFixed(1)}</text>
+        <text x="${bx+sw/2}" y="${by+16}" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#5c3d8f" font-weight="700">b = ${b.toFixed(1)}</text>`;
+    }
+  },
+  circulo:{
+    sliders:()=>makeSlider('pl-r','Radio (r) — cm',0.5,8,4,'updatePlana()'),
+    calc:()=>{const r=sv('pl-r');return{area:(Math.PI*r*r).toFixed(3),extra:`C = ${(2*Math.PI*r).toFixed(3)} cm  |  d = ${(2*r).toFixed(3)} cm`};},
+    draw:(svg)=>{
+      const r=sv('pl-r');const sc=Math.min(90/(r||1),22);const sr=r*sc;
+      svg.innerHTML=`
+        <circle cx="110" cy="110" r="${sr}" fill="#E2F0E7" stroke="#4a7c59" stroke-width="2.5"/>
+        <circle cx="110" cy="110" r="4" fill="#4a7c59"/>
+        <line x1="110" y1="110" x2="${110+sr}" y2="110" stroke="#4a7c59" stroke-width="2"/>
+        <text x="${110+sr/2}" y="104" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#4a7c59" font-weight="700">r = ${r.toFixed(1)}</text>`;
+    }
+  }
+};
+
+function setupPlana(){
+  const fig=document.getElementById('plana-sel').value;
+  document.getElementById('plana-sliders').innerHTML=planaConfigs[fig].sliders();
+  updatePlana();
+}
+function updatePlana(){
+  const fig=document.getElementById('plana-sel').value;
+  const cfg=planaConfigs[fig];
+  if(!cfg)return;
+  const svg=document.getElementById('plana-svg');
+  cfg.draw(svg);
+  const r=cfg.calc();
+  document.getElementById('plana-rv').innerHTML=`Área = <strong>${r.area} cm²</strong><br><small style="opacity:0.7;">${r.extra}</small>`;
+}
+
+// ===================== CALCULADORA SÓLIDOS =====================
+const solidoConfigs = {
+  cubo:{
+    sliders:()=>makeSlider('so-l','Arista (l) — cm',0.5,8,4,'updateSolido()'),
+    calc:()=>{const l=sv('so-l');return{vol:(l*l*l).toFixed(3),extra:`A_total = ${(6*l*l).toFixed(3)} cm²  |  d = ${(l*Math.sqrt(3)).toFixed(3)} cm`};},
+    draw:(svg)=>{
+      const l=sv('so-l');const sc=Math.min(120/(l||1),16);const s=l*sc;
+      const ox=40,oy=200-s-30,off=s*0.4;
+      svg.innerHTML=`
+        <polygon points="${ox},${oy} ${ox+s},${oy} ${ox+s},${oy+s} ${ox},${oy+s}" fill="#D6E4F0" stroke="#0d7377" stroke-width="2"/>
+        <polygon points="${ox},${oy} ${ox+off},${oy-off} ${ox+s+off},${oy-off} ${ox+s},${oy}" fill="#B8D4E8" stroke="#0d7377" stroke-width="2"/>
+        <polygon points="${ox+s},${oy} ${ox+s+off},${oy-off} ${ox+s+off},${oy+s-off} ${ox+s},${oy+s}" fill="#9BC4D8" stroke="#0d7377" stroke-width="2"/>
+        <line x1="${ox}" y1="${oy+s}" x2="${ox+off}" y2="${oy+s-off}" stroke="#0d7377" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <line x1="${ox+off}" y1="${oy+s-off}" x2="${ox+s+off}" y2="${oy+s-off}" stroke="#0d7377" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <line x1="${ox+off}" y1="${oy-off}" x2="${ox+off}" y2="${oy+s-off}" stroke="#0d7377" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <text x="${ox+s/2}" y="${oy+s/2+5}" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#0d7377" font-weight="700">l=${l.toFixed(1)}</text>`;
+    }
+  },
+  prisma:{
+    sliders:()=>makeSlider('so-l','Largo (l) — cm',0.5,8,6,'updateSolido()')+makeSlider('so-a','Ancho (a) — cm',0.5,8,4,'updateSolido()')+makeSlider('so-h2','Alto (h) — cm',0.5,8,3,'updateSolido()'),
+    calc:()=>{const l=sv('so-l'),a=sv('so-a'),h=sv('so-h2');return{vol:(l*a*h).toFixed(3),extra:`A_total = ${(2*(l*a+l*h+a*h)).toFixed(3)} cm²`};},
+    draw:(svg)=>{
+      const l=sv('so-l'),a=sv('so-a'),h=sv('so-h2');
+      const sc=Math.min(110/(Math.max(l,a,h)||1),14);
+      const sw=l*sc,sh=h*sc,off=a*sc*0.5;
+      const ox=30,oy=200-sh-20;
+      svg.innerHTML=`
+        <polygon points="${ox},${oy} ${ox+sw},${oy} ${ox+sw},${oy+sh} ${ox},${oy+sh}" fill="#FCE8E0" stroke="#b5451b" stroke-width="2"/>
+        <polygon points="${ox},${oy} ${ox+off},${oy-off} ${ox+sw+off},${oy-off} ${ox+sw},${oy}" fill="#F5D5C8" stroke="#b5451b" stroke-width="2"/>
+        <polygon points="${ox+sw},${oy} ${ox+sw+off},${oy-off} ${ox+sw+off},${oy+sh-off} ${ox+sw},${oy+sh}" fill="#EAC0AD" stroke="#b5451b" stroke-width="2"/>
+        <line x1="${ox}" y1="${oy+sh}" x2="${ox+off}" y2="${oy+sh-off}" stroke="#b5451b" stroke-width="1.2" stroke-dasharray="3,3"/>
+        <line x1="${ox+off}" y1="${oy+sh-off}" x2="${ox+sw+off}" y2="${oy+sh-off}" stroke="#b5451b" stroke-width="1.2" stroke-dasharray="3,3"/>
+        <line x1="${ox+off}" y1="${oy-off}" x2="${ox+off}" y2="${oy+sh-off}" stroke="#b5451b" stroke-width="1.2" stroke-dasharray="3,3"/>
+        <text x="${ox+sw/2}" y="${oy+sh/2+4}" text-anchor="middle" font-family="DM Sans" font-size="10" fill="#b5451b" font-weight="700">${l.toFixed(1)}×${a.toFixed(1)}×${h.toFixed(1)}</text>`;
+    }
+  },
+  cilindro:{
+    sliders:()=>makeSlider('so-r','Radio (r) — cm',0.5,8,3.5,'updateSolido()')+makeSlider('so-h','Altura (h) — cm',0.5,8,6,'updateSolido()'),
+    calc:()=>{const r=sv('so-r'),h=sv('so-h');return{vol:(Math.PI*r*r*h).toFixed(3),extra:`A_lat = ${(2*Math.PI*r*h).toFixed(3)} cm²  |  A_total = ${(2*Math.PI*r*(r+h)).toFixed(3)} cm²`};},
+    draw:(svg)=>{
+      const r=sv('so-r'),h=sv('so-h');
+      const sc=Math.min(80/(r||1),Math.min(160/(h||1),14));
+      const sr=r*sc,sh=h*sc,ry=sr*0.3;
+      const cx=110,top=200-sh-30-ry;
+      svg.innerHTML=`
+        <ellipse cx="${cx}" cy="${top+sh}" rx="${sr}" ry="${ry}" fill="#EDE5F8" stroke="#5c3d8f" stroke-width="2"/>
+        <rect x="${cx-sr}" y="${top}" width="${sr*2}" height="${sh}" fill="#EDE5F8"/>
+        <line x1="${cx-sr}" y1="${top}" x2="${cx-sr}" y2="${top+sh}" stroke="#5c3d8f" stroke-width="2"/>
+        <line x1="${cx+sr}" y1="${top}" x2="${cx+sr}" y2="${top+sh}" stroke="#5c3d8f" stroke-width="2"/>
+        <ellipse cx="${cx}" cy="${top}" rx="${sr}" ry="${ry}" fill="#E2D5F5" stroke="#5c3d8f" stroke-width="2"/>
+        <line x1="${cx}" y1="${top}" x2="${cx+sr}" y2="${top}" stroke="#5c3d8f" stroke-width="1.8"/>
+        <text x="${cx+sr/2}" y="${top-6}" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#5c3d8f" font-weight="700">r=${r.toFixed(1)}</text>
+        <text x="${cx+sr+14}" y="${top+sh/2+4}" font-family="DM Sans" font-size="11" fill="#5c3d8f" font-weight="700">h=${h.toFixed(1)}</text>`;
+    }
+  },
+  esfera:{
+    sliders:()=>makeSlider('so-r2','Radio (r) — cm',0.5,8,4,'updateSolido()'),
+    calc:()=>{const r=sv('so-r2');return{vol:((4/3)*Math.PI*r*r*r).toFixed(3),extra:`A = ${(4*Math.PI*r*r).toFixed(3)} cm²`};},
+    draw:(svg)=>{
+      const r=sv('so-r2');const sc=Math.min(90/(r||1),20);const sr=r*sc;
+      svg.innerHTML=`
+        <defs><radialGradient id="sg2" cx="38%" cy="35%" r="60%"><stop offset="0%" stop-color="#E2F0E7"/><stop offset="100%" stop-color="#4a7c59" stop-opacity="0.6"/></radialGradient></defs>
+        <circle cx="110" cy="110" r="${sr}" fill="url(#sg2)" stroke="#4a7c59" stroke-width="2.5"/>
+        <ellipse cx="110" cy="110" rx="${sr}" ry="${Math.max(sr*0.25,4)}" fill="none" stroke="#4a7c59" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <circle cx="110" cy="110" r="4" fill="#4a7c59"/>
+        <line x1="110" y1="110" x2="${110+sr}" y2="110" stroke="#4a7c59" stroke-width="2"/>
+        <text x="${110+sr/2}" y="104" text-anchor="middle" font-family="DM Sans" font-size="11" fill="#4a7c59" font-weight="700">r = ${r.toFixed(1)}</text>`;
+    }
+  }
+};
+
+function setupSolido(){
+  const sol=document.getElementById('solido-sel').value;
+  document.getElementById('solido-sliders').innerHTML=solidoConfigs[sol].sliders();
+  updateSolido();
+}
+function updateSolido(){
+  const sol=document.getElementById('solido-sel').value;
+  const cfg=solidoConfigs[sol];
+  if(!cfg)return;
+  const svg=document.getElementById('solido-svg');
+  cfg.draw(svg);
+  const r=cfg.calc();
+  document.getElementById('solido-rv').innerHTML=`Volumen = <strong>${r.vol} cm³</strong><br><small style="opacity:0.7;">${r.extra}</small>`;
+}
+
+// init
+setupPlana();
+setupSolido();
+
+// ===================== ACTIVITIES =====================
+function toggleAnswer(id){document.getElementById(id).classList.toggle('show');}
+
+// ===================== SVG FIGURE BUILDERS =====================
+function svgSquare(l,color='#D6E4F0',stroke='#0d7377'){
+  const s=130,pad=28,side=s-pad*2;
+  return `<svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}">
+    <rect x="${pad}" y="${pad}" width="${side}" height="${side}" fill="${color}" stroke="${stroke}" stroke-width="2.5" rx="2"/>
+    <text x="${pad+side/2}" y="${pad-8}" text-anchor="middle" font-family="DM Sans" font-size="12" fill="${stroke}" font-weight="700">l = ${l} cm</text>
+    <text x="${pad-10}" y="${pad+side/2+4}" text-anchor="end" font-family="DM Sans" font-size="12" fill="${stroke}" font-weight="700">l</text>
+    <rect x="${pad}" y="${pad}" width="10" height="10" fill="none" stroke="${stroke}" stroke-width="1.5"/>
+  </svg>`;
+}
+function svgRect(b,h,color='#FCE8E0',stroke='#b5451b'){
+  const W=160,H=110,px=16,py=14,sw=W-px*2,sh=H-py*2;
+  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+    <rect x="${px}" y="${py}" width="${sw}" height="${sh}" fill="${color}" stroke="${stroke}" stroke-width="2.5" rx="2"/>
+    <text x="${px+sw/2}" y="${py-6}" text-anchor="middle" font-family="DM Sans" font-size="12" fill="${stroke}" font-weight="700">b = ${b} m</text>
+    <text x="${px+sw+8}" y="${py+sh/2+4}" font-family="DM Sans" font-size="12" fill="${stroke}" font-weight="700">h = ${h} m</text>
+    <rect x="${px}" y="${py}" width="10" height="10" fill="none" stroke="${stroke}" stroke-width="1.5"/>
+  </svg>`;
+}
+function svgTriangle(b,h,color='#EDE5F8',stroke='#5c3d8f'){
+  const W=150,H=120,bx=15,by=H-10,tw=W-30,th=H-20;
+  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+    <polygon points="${bx+tw/2},${by-th} ${bx},${by} ${bx+tw},${by}" fill="${color}" stroke="${stroke}" stroke-width="2.5"/>
+    <line x1="${bx+tw/2}" y1="${by-th}" x2="${bx+tw/2}" y2="${by}" stroke="${stroke}" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <rect x="${bx+tw/2-5}" y="${by-10}" width="10" height="10" fill="none" stroke="${stroke}" stroke-width="1.5"/>
+    <text x="${bx+tw/2+10}" y="${by-th/2+4}" font-family="DM Sans" font-size="11" fill="${stroke}" font-weight="700">h=${h}</text>
+    <text x="${bx+tw/2}" y="${by+14}" text-anchor="middle" font-family="DM Sans" font-size="11" fill="${stroke}" font-weight="700">b = ${b}</text>
+  </svg>`;
+}
+function svgCircle(r,color='#E2F0E7',stroke='#4a7c59'){
+  const cx=70,cy=70,sr=52;
+  return `<svg width="140" height="140" viewBox="0 0 140 140">
+    <circle cx="${cx}" cy="${cy}" r="${sr}" fill="${color}" stroke="${stroke}" stroke-width="2.5"/>
+    <circle cx="${cx}" cy="${cy}" r="4" fill="${stroke}"/>
+    <line x1="${cx}" y1="${cy}" x2="${cx+sr}" y2="${cy}" stroke="${stroke}" stroke-width="2"/>
+    <text x="${cx+sr/2+2}" y="${cy-8}" text-anchor="middle" font-family="DM Sans" font-size="12" fill="${stroke}" font-weight="700">r = ${r} m</text>
+    <text x="${cx}" y="${cy+13}" text-anchor="middle" font-family="DM Sans" font-size="10" fill="${stroke}" opacity="0.7">O</text>
+  </svg>`;
+}
+function svgCube(l,color='#D6E4F0',stroke='#0d7377'){
+  const s=90,off=32;
+  return `<svg width="150" height="130" viewBox="0 0 150 130">
+    <polygon points="20,35 ${20+s},35 ${20+s},${35+s} 20,${35+s}" fill="${color}" stroke="${stroke}" stroke-width="2"/>
+    <polygon points="20,35 ${20+off},${35-off} ${20+s+off},${35-off} ${20+s},35" fill="#B8D4E8" stroke="${stroke}" stroke-width="2"/>
+    <polygon points="${20+s},35 ${20+s+off},${35-off} ${20+s+off},${35+s-off} ${20+s},${35+s}" fill="#9BC4D8" stroke="${stroke}" stroke-width="2"/>
+    <line x1="20" y1="${35+s}" x2="${20+off}" y2="${35+s-off}" stroke="${stroke}" stroke-width="1.2" stroke-dasharray="4,3"/>
+    <line x1="${20+off}" y1="${35+s-off}" x2="${20+s+off}" y2="${35+s-off}" stroke="${stroke}" stroke-width="1.2" stroke-dasharray="4,3"/>
+    <line x1="${20+off}" y1="${35-off}" x2="${20+off}" y2="${35+s-off}" stroke="${stroke}" stroke-width="1.2" stroke-dasharray="4,3"/>
+    <text x="${20+s/2}" y="${35+s/2+5}" text-anchor="middle" font-family="DM Sans" font-size="11" fill="${stroke}" font-weight="700">l = ${l} cm</text>
+  </svg>`;
+}
+function svgPrism(l,a,h,color='#FCE8E0',stroke='#b5451b'){
+  const W=160,H=120,sw=90,sh=65,off=30,ox=16,oy=H-sh-8;
+  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+    <polygon points="${ox},${oy} ${ox+sw},${oy} ${ox+sw},${oy+sh} ${ox},${oy+sh}" fill="${color}" stroke="${stroke}" stroke-width="2"/>
+    <polygon points="${ox},${oy} ${ox+off},${oy-off} ${ox+sw+off},${oy-off} ${ox+sw},${oy}" fill="#F5D5C8" stroke="${stroke}" stroke-width="2"/>
+    <polygon points="${ox+sw},${oy} ${ox+sw+off},${oy-off} ${ox+sw+off},${oy+sh-off} ${ox+sw},${oy+sh}" fill="#EAC0AD" stroke="${stroke}" stroke-width="2"/>
+    <line x1="${ox}" y1="${oy+sh}" x2="${ox+off}" y2="${oy+sh-off}" stroke="${stroke}" stroke-width="1.2" stroke-dasharray="3,3"/>
+    <line x1="${ox+off}" y1="${oy+sh-off}" x2="${ox+sw+off}" y2="${oy+sh-off}" stroke="${stroke}" stroke-width="1.2" stroke-dasharray="3,3"/>
+    <line x1="${ox+off}" y1="${oy-off}" x2="${ox+off}" y2="${oy+sh-off}" stroke="${stroke}" stroke-width="1.2" stroke-dasharray="3,3"/>
+    <text x="${ox+sw/2}" y="${oy+sh/2+4}" text-anchor="middle" font-family="DM Sans" font-size="10" fill="${stroke}" font-weight="700">${l}×${a}×${h}</text>
+    <text x="${ox+sw+off/2+6}" y="${oy-off/2}" font-family="DM Sans" font-size="10" fill="${stroke}" font-weight="700">a=${a}</text>
+    <text x="${ox+sw+off+4}" y="${oy+sh/2}" font-family="DM Sans" font-size="10" fill="${stroke}" font-weight="700">h=${h}</text>
+    <text x="${ox+sw/2}" y="${oy+sh+12}" text-anchor="middle" font-family="DM Sans" font-size="10" fill="${stroke}" font-weight="700">l=${l}</text>
+  </svg>`;
+}
+function svgCylinder(r,h,color='#EDE5F8',stroke='#5c3d8f'){
+  const cx=65,sr=48,ry=14,top=12,bottom=top+h*8;
+  const svgH=bottom+ry+10;
+  return `<svg width="130" height="${Math.min(svgH,130)}" viewBox="0 0 130 ${Math.min(svgH,130)}">
+    <ellipse cx="${cx}" cy="${bottom}" rx="${sr}" ry="${ry}" fill="${color}" stroke="${stroke}" stroke-width="2"/>
+    <rect x="${cx-sr}" y="${top}" width="${sr*2}" height="${bottom-top}" fill="${color}"/>
+    <line x1="${cx-sr}" y1="${top}" x2="${cx-sr}" y2="${bottom}" stroke="${stroke}" stroke-width="2"/>
+    <line x1="${cx+sr}" y1="${top}" x2="${cx+sr}" y2="${bottom}" stroke="${stroke}" stroke-width="2"/>
+    <ellipse cx="${cx}" cy="${top}" rx="${sr}" ry="${ry}" fill="#E2D5F5" stroke="${stroke}" stroke-width="2"/>
+    <line x1="${cx}" y1="${top}" x2="${cx+sr}" y2="${top}" stroke="${stroke}" stroke-width="1.8"/>
+    <text x="${cx+sr/2}" y="${top-4}" text-anchor="middle" font-family="DM Sans" font-size="11" fill="${stroke}" font-weight="700">r=${r}</text>
+    <text x="${cx+sr+10}" y="${top+(bottom-top)/2+4}" font-family="DM Sans" font-size="11" fill="${stroke}" font-weight="700">h=${h}</text>
+  </svg>`;
+}
+function svgSphere(r,color='#E2F0E7',stroke='#4a7c59'){
+  const cx=70,cy=70,sr=54;
+  return `<svg width="140" height="140" viewBox="0 0 140 140">
+    <defs><radialGradient id="qsg" cx="38%" cy="35%" r="60%"><stop offset="0%" stop-color="${color}"/><stop offset="100%" stop-color="${stroke}" stop-opacity="0.5"/></radialGradient></defs>
+    <circle cx="${cx}" cy="${cy}" r="${sr}" fill="url(#qsg)" stroke="${stroke}" stroke-width="2.5"/>
+    <ellipse cx="${cx}" cy="${cy}" rx="${sr}" ry="${Math.round(sr*0.28)}" fill="none" stroke="${stroke}" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <circle cx="${cx}" cy="${cy}" r="4" fill="${stroke}"/>
+    <line x1="${cx}" y1="${cy}" x2="${cx+sr}" y2="${cy}" stroke="${stroke}" stroke-width="2"/>
+    <text x="${cx+sr/2}" y="${cy-10}" text-anchor="middle" font-family="DM Sans" font-size="12" fill="${stroke}" font-weight="700">r = ${r}</text>
+  </svg>`;
+}
+
+// ===================== 4 QUIZ BANKS =====================
+// Each bank: 15 questions, each with optional fig (SVG string)
+const PINS = {1:'347', 2:'512', 3:'769', 4:'284'};
+const VERSION_NAMES = {1:'A',2:'B',3:'C',4:'D'};
+
+const banks = {
+1: [
+  {comp:"Razonamiento",text:"El baldosín cuadrado de la figura tiene lado <b>l = 8 cm</b>. ¿Cuál es su área?",
+   fig:`<div class="q-figure">${svgSquare(8)}
+        <div class="q-figure-caption">Cuadrado<br>l = 8 cm</div></div>`,
+   opts:["48 cm²","64 cm²","32 cm²","16 cm²"],ans:1},
+  {comp:"Resolución de problemas",text:"El rectángulo muestra las dimensiones de un campo deportivo. ¿Cuántos m² tiene?",
+   fig:`<div class="q-figure">${svgRect(25,12)}
+        <div class="q-figure-caption">Rectángulo<br>b=25 m · h=12 m</div></div>`,
+   opts:["300 m²","37 m²","150 m²","600 m²"],ans:0},
+  {comp:"Resolución de problemas",text:"El triángulo representa un sendero en un parque. ¿Cuál es su área?",
+   fig:`<div class="q-figure">${svgTriangle('14 m','9 m')}
+        <div class="q-figure-caption">Triángulo<br>b=14 m · h=9 m</div></div>`,
+   opts:["126 m²","63 m²","46 m²","252 m²"],ans:1},
+  {comp:"Comunicación",text:"El círculo representa la base de una fuente. ¿Cuál es la longitud de su borde? (π ≈ 3.14)",
+   fig:`<div class="q-figure">${svgCircle(5)}
+        <div class="q-figure-caption">Círculo<br>r = 5 m</div></div>`,
+   opts:["15.7 m","31.4 m","78.5 m","157 m"],ans:1},
+  {comp:"Razonamiento",text:"Si duplicas el lado del cuadrado mostrado, ¿cuántas veces aumenta su área?",
+   fig:`<div class="q-figure">${svgSquare(6)}
+        <div class="q-figure-caption">Cuadrado<br>l = 6 cm</div></div>`,
+   opts:["2 veces","3 veces","4 veces","6 veces"],ans:2},
+  {comp:"Resolución de problemas",text:"El cubo mostrado es una caja de madera. ¿Cuánta madera se necesita para sus 6 caras?",
+   fig:`<div class="q-figure">${svgCube(5)}
+        <div class="q-figure-caption">Cubo<br>l = 5 cm</div></div>`,
+   opts:["125 cm²","150 cm²","75 cm²","30 cm²"],ans:1},
+  {comp:"Resolución de problemas",text:"Calcula el volumen del cubo de la figura.",
+   fig:`<div class="q-figure">${svgCube(4)}
+        <div class="q-figure-caption">Cubo<br>l = 4 cm</div></div>`,
+   opts:["16 cm³","48 cm³","64 cm³","96 cm³"],ans:2},
+  {comp:"Comunicación",text:"El prisma rectangular es un acuario. ¿Cuántos litros de agua caben? (1 dm³ = 1 L)",
+   fig:`<div class="q-figure">${svgPrism('60','30','40')}
+        <div class="q-figure-caption">Prisma · l=60 cm<br>a=30 cm · h=40 cm</div></div>`,
+   opts:["72 L","7.2 L","720 L","7200 L"],ans:0},
+  {comp:"Razonamiento",text:"¿Cuánto aumenta el volumen del cubo si su arista se triplica?",
+   fig:`<div class="q-figure">${svgCube(3)}
+        <div class="q-figure-caption">Cubo<br>l = 3 cm</div></div>`,
+   opts:["3 veces","9 veces","27 veces","81 veces"],ans:2},
+  {comp:"Resolución de problemas",text:"El cilindro es un tanque de agua. ¿Cuántos litros almacena? (π ≈ 3.14)",
+   fig:`<div class="q-figure">${svgCylinder(2,6)}
+        <div class="q-figure-caption">Cilindro<br>r=2 m · h=6 m</div></div>`,
+   opts:["75.36 m³","25.12 m³","37.68 m³","150.72 m³"],ans:0},
+  {comp:"Comunicación",text:"La esfera representa un globo. ¿Cuál es su área superficial? (π ≈ 3.14)",
+   fig:`<div class="q-figure">${svgSphere(3)}
+        <div class="q-figure-caption">Esfera<br>r = 3 m</div></div>`,
+   opts:["28.26 m²","113.04 m²","339.12 m²","56.52 m²"],ans:1},
+  {comp:"Resolución de problemas",text:"¿Cuál es el volumen de la esfera? (π ≈ 3.14)",
+   fig:`<div class="q-figure">${svgSphere(4)}
+        <div class="q-figure-caption">Esfera<br>r = 4 cm</div></div>`,
+   opts:["267.95 cm³","200.96 cm³","803.84 cm³","33.49 cm³"],ans:0},
+  {comp:"Razonamiento",text:"El área del círculo es 314 cm². ¿Cuál es su radio? (π ≈ 3.14)",
+   fig:`<div class="q-figure">${svgCircle(10)}
+        <div class="q-figure-caption">Círculo<br>A = 314 cm²</div></div>`,
+   opts:["5 cm","10 cm","20 cm","100 cm"],ans:1},
+  {comp:"Comunicación",text:"El área total del prisma rectangular es 2(la+lh+ah). Con los datos de la figura, ¿cuánto vale?",
+   fig:`<div class="q-figure">${svgPrism(8,5,3)}
+        <div class="q-figure-caption">Prisma · l=8 cm<br>a=5 cm · h=3 cm</div></div>`,
+   opts:["158 cm²","79 cm²","120 cm²","240 cm²"],ans:0},
+  {comp:"Razonamiento",text:"Un cilindro y una esfera tienen el mismo radio (r=3 cm). El cilindro tiene h=4 cm. ¿Cuál tiene mayor volumen?",
+   fig:`<div class="q-figure">${svgCylinder(3,4)}${svgSphere(3)}
+        <div class="q-figure-caption">Cilindro r=3, h=4<br>Esfera r=3</div></div>`,
+   opts:["El cilindro (≈113 cm³)","La esfera (≈113 cm³)","Son iguales","El cilindro (≈226 cm³)"],ans:0},
+],
+2: [
+  {comp:"Razonamiento",text:"La loseta cuadrada tiene un perímetro de <b>36 cm</b>. ¿Cuál es su área?",
+   fig:`<div class="q-figure">${svgSquare('?')}
+        <div class="q-figure-caption">Cuadrado<br>P = 36 cm</div></div>`,
+   opts:["81 cm²","36 cm²","144 cm²","9 cm²"],ans:0},
+  {comp:"Resolución de problemas",text:"Un jardín rectangular va a cubrirse de césped. ¿Cuántos m² de césped se necesitan?",
+   fig:`<div class="q-figure">${svgRect(18,7)}
+        <div class="q-figure-caption">Rectángulo<br>b=18 m · h=7 m</div></div>`,
+   opts:["25 m²","126 m²","63 m²","252 m²"],ans:1},
+  {comp:"Comunicación",text:"El triángulo isósceles representa el tejado de una casita. ¿Cuál es su área?",
+   fig:`<div class="q-figure">${svgTriangle('10 m','6 m')}
+        <div class="q-figure-caption">Triángulo<br>b=10 m · h=6 m</div></div>`,
+   opts:["60 m²","30 m²","15 m²","120 m²"],ans:1},
+  {comp:"Resolución de problemas",text:"La piscina circular tiene r = 4 m. ¿Cuántos m² de cubierta se necesitan? (π ≈ 3.14)",
+   fig:`<div class="q-figure">${svgCircle(4)}
+        <div class="q-figure-caption">Círculo<br>r = 4 m</div></div>`,
+   opts:["12.56 m²","25.12 m²","50.24 m²","100.48 m²"],ans:2},
+  {comp:"Razonamiento",text:"El cuadrado tiene diagonal de 10√2 cm. ¿Cuál es su área?",
+   fig:`<div class="q-figure">${svgSquare('?')}
+        <div class="q-figure-caption">Cuadrado<br>d = 10√2 cm</div></div>`,
+   opts:["50 cm²","100 cm²","200 cm²","141 cm²"],ans:1},
+  {comp:"Resolución de problemas",text:"El cubo es una caja de regalo. ¿Cuánto papel envoltorio se necesita para cubrirlo todo?",
+   fig:`<div class="q-figure">${svgCube(6)}
+        <div class="q-figure-caption">Cubo<br>l = 6 cm</div></div>`,
+   opts:["36 cm²","216 cm²","36 cm²","216 cm²"],ans:1},
+  {comp:"Resolución de problemas",text:"¿Cuántos litros de agua caben en el cubo? (1 dm³ = 1 L, 1 dm = 10 cm)",
+   fig:`<div class="q-figure">${svgCube(10)}
+        <div class="q-figure-caption">Cubo<br>l = 10 cm</div></div>`,
+   opts:["1 L","10 L","0.1 L","100 L"],ans:0},
+  {comp:"Comunicación",text:"El prisma rectangular es una pileta de natación. ¿Cuántos m³ de agua necesita?",
+   fig:`<div class="q-figure">${svgPrism(15,8,2)}
+        <div class="q-figure-caption">Prisma · l=15 m<br>a=8 m · h=2 m</div></div>`,
+   opts:["120 m³","240 m³","60 m³","480 m³"],ans:1},
+  {comp:"Razonamiento",text:"Si el radio del cilindro se duplica y la altura se mantiene, ¿en qué factor aumenta el volumen?",
+   fig:`<div class="q-figure">${svgCylinder(3,5)}
+        <div class="q-figure-caption">Cilindro<br>r=3 · h=5</div></div>`,
+   opts:["2","4","8","16"],ans:1},
+  {comp:"Resolución de problemas",text:"El cilindro es un silo de grano. ¿Cuántos m³ almacena? (π ≈ 3.14)",
+   fig:`<div class="q-figure">${svgCylinder(3,8)}
+        <div class="q-figure-caption">Cilindro<br>r=3 m · h=8 m</div></div>`,
+   opts:["226.08 m³","75.36 m³","452.16 m³","113.04 m³"],ans:0},
+  {comp:"Comunicación",text:"La esfera es un tanque de gas. ¿Cuál es su volumen? (π ≈ 3.14)",
+   fig:`<div class="q-figure">${svgSphere(5)}
+        <div class="q-figure-caption">Esfera<br>r = 5 m</div></div>`,
+   opts:["523.33 m³","314 m³","2094.4 m³","261.67 m³"],ans:0},
+  {comp:"Razonamiento",text:"Si el radio de la esfera se divide entre 2, ¿en qué factor disminuye su volumen?",
+   fig:`<div class="q-figure">${svgSphere(6)}
+        <div class="q-figure-caption">Esfera<br>r = 6 cm</div></div>`,
+   opts:["Se divide entre 2","Se divide entre 4","Se divide entre 8","Se divide entre 6"],ans:2},
+  {comp:"Resolución de problemas",text:"La circunferencia de la figura representa la llanta de una bicicleta. Si d = 70 cm, ¿cuánto avanza en una vuelta completa? (π ≈ 3.14)",
+   fig:`<div class="q-figure">${svgCircle('35')}
+        <div class="q-figure-caption">Círculo<br>d = 70 cm</div></div>`,
+   opts:["219.8 cm","109.9 cm","3848.45 cm","439.6 cm"],ans:0},
+  {comp:"Comunicación",text:"¿Cuántos cm³ ocupa la caja prismática de la figura?",
+   fig:`<div class="q-figure">${svgPrism(12,7,4)}
+        <div class="q-figure-caption">Prisma · l=12 cm<br>a=7 cm · h=4 cm</div></div>`,
+   opts:["336 cm³","168 cm³","672 cm³","252 cm³"],ans:0},
+  {comp:"Razonamiento",text:"El área total de un cubo es 216 cm². ¿Cuál es su volumen?",
+   fig:`<div class="q-figure">${svgCube('?')}
+        <div class="q-figure-caption">Cubo<br>A_total = 216 cm²</div></div>`,
+   opts:["36 cm³","216 cm³","1296 cm³","6 cm³"],ans:1},
+],
+3: [
+  {comp:"Razonamiento",text:"El cuadrado de la figura tiene área 49 cm². ¿Cuál es su perímetro?",
+   fig:`<div class="q-figure">${svgSquare('?')}
+        <div class="q-figure-caption">Cuadrado<br>A = 49 cm²</div></div>`,
+   opts:["7 cm","14 cm","28 cm","196 cm"],ans:2},
+  {comp:"Resolución de problemas",text:"Se quiere pintar la pared rectangular de la figura a $12.000/m². ¿Cuánto costará?",
+   fig:`<div class="q-figure">${svgRect(6,3)}
+        <div class="q-figure-caption">Pared<br>b=6 m · h=3 m</div></div>`,
+   opts:["$18.000","$36.000","$216.000","$54.000"],ans:2},
+  {comp:"Comunicación",text:"El triángulo tiene lados 6, 8 y 10 cm (triángulo rectángulo). ¿Cuál es su área?",
+   fig:`<div class="q-figure">${svgTriangle('8 cm','6 cm')}
+        <div class="q-figure-caption">Triángulo rectángulo<br>b=8 cm · h=6 cm</div></div>`,
+   opts:["48 cm²","24 cm²","30 cm²","12 cm²"],ans:1},
+  {comp:"Resolución de problemas",text:"La base de la piscina circular tiene r = 6 m. ¿Cuántos m² hay que cubrir con cerámica? (π ≈ 3.14)",
+   fig:`<div class="q-figure">${svgCircle(6)}
+        <div class="q-figure-caption">Círculo<br>r = 6 m</div></div>`,
+   opts:["37.68 m²","113.04 m²","226.08 m²","75.36 m²"],ans:1},
+  {comp:"Razonamiento",text:"El lado del cuadrado aumenta en un 50%. ¿En qué porcentaje aumenta su área?",
+   fig:`<div class="q-figure">${svgSquare(4)}
+        <div class="q-figure-caption">Cuadrado<br>l = 4 cm</div></div>`,
+   opts:["50%","100%","125%","225%"],ans:2},
+  {comp:"Resolución de problemas",text:"El cubo es una nevera de camping. ¿Cuántos litros puede contener? (1 dm³ = 1 L)",
+   fig:`<div class="q-figure">${svgCube(3)}
+        <div class="q-figure-caption">Cubo<br>l = 3 dm</div></div>`,
+   opts:["9 L","27 L","18 L","54 L"],ans:1},
+  {comp:"Comunicación",text:"El cubo tiene volumen 512 cm³. ¿Cuál es el área de una de sus caras?",
+   fig:`<div class="q-figure">${svgCube('?')}
+        <div class="q-figure-caption">Cubo<br>V = 512 cm³</div></div>`,
+   opts:["8 cm²","32 cm²","64 cm²","16 cm²"],ans:2},
+  {comp:"Resolución de problemas",text:"El prisma es una piscina rectangular. ¿Cuántos litros de agua necesita? (1 m³ = 1000 L)",
+   fig:`<div class="q-figure">${svgPrism(10,5,2)}
+        <div class="q-figure-caption">Prisma · l=10 m<br>a=5 m · h=2 m</div></div>`,
+   opts:["17.000 L","100.000 L","34.000 L","50.000 L"],ans:1},
+  {comp:"Razonamiento",text:"¿Cuánto material se necesita para fabricar la superficie lateral del cilindro? (π ≈ 3.14)",
+   fig:`<div class="q-figure">${svgCylinder(4,7)}
+        <div class="q-figure-caption">Cilindro<br>r=4 cm · h=7 cm</div></div>`,
+   opts:["87.92 cm²","175.84 cm²","351.68 cm²","263.76 cm²"],ans:1},
+  {comp:"Resolución de problemas",text:"El cilindro es un tinaco de agua en una casa. ¿Cuántos litros almacena? (π≈3.14, 1m³=1000L)",
+   fig:`<div class="q-figure">${svgCylinder(1,2)}
+        <div class="q-figure-caption">Cilindro<br>r=1 m · h=2 m</div></div>`,
+   opts:["6.28 L","628 L","6280 L","62.8 L"],ans:2},
+  {comp:"Comunicación",text:"La esfera es la Tierra a escala. ¿Cuál es su área superficial? (r = 6 cm, π ≈ 3.14)",
+   fig:`<div class="q-figure">${svgSphere(6)}
+        <div class="q-figure-caption">Esfera<br>r = 6 cm</div></div>`,
+   opts:["75.36 cm²","452.16 cm²","904.32 cm²","1130.97 cm²"],ans:1},
+  {comp:"Razonamiento",text:"¿Cuál es el volumen de la esfera de la figura? (π ≈ 3.14)",
+   fig:`<div class="q-figure">${svgSphere(3)}
+        <div class="q-figure-caption">Esfera<br>r = 3 cm</div></div>`,
+   opts:["37.68 cm³","113.04 cm³","904.32 cm³","28.26 cm³"],ans:1},
+  {comp:"Resolución de problemas",text:"Un logo tiene forma de triángulo con b = 20 cm y h = 15 cm. Si se imprimen 200 logos, ¿cuántos m² de papel se usan?",
+   fig:`<div class="q-figure">${svgTriangle('20 cm','15 cm')}
+        <div class="q-figure-caption">Triángulo<br>b=20 cm · h=15 cm</div></div>`,
+   opts:["3 m²","6 m²","30 m²","60 m²"],ans:1},
+  {comp:"Comunicación",text:"El prisma tiene volumen 480 cm³, largo 10 cm y alto 6 cm. ¿Cuál es el ancho?",
+   fig:`<div class="q-figure">${svgPrism(10,'?',6)}
+        <div class="q-figure-caption">Prisma · l=10 · h=6<br>V = 480 cm³</div></div>`,
+   opts:["4 cm","8 cm","12 cm","6 cm"],ans:1},
+  {comp:"Razonamiento",text:"Compara el área de un círculo de r=5 con la de un cuadrado de l=8. ¿Cuál es mayor?",
+   fig:`<div class="q-figure">${svgCircle(5)}${svgSquare(8)}
+        <div class="q-figure-caption">Círculo r=5 / Cuadrado l=8</div></div>`,
+   opts:["El círculo (≈78.5)","El cuadrado (64)","Son iguales","Depende de las unidades"],ans:0},
+],
+4: [
+  {comp:"Comunicación",text:"El cuadrado tiene diagonal d. ¿Cuál expresión da su área en términos de d?",
+   fig:`<div class="q-figure">${svgSquare('l')}
+        <div class="q-figure-caption">Cuadrado<br>diagonal = d = l√2</div></div>`,
+   opts:["A = d²","A = d²/2","A = 2d²","A = d/√2"],ans:1},
+  {comp:"Resolución de problemas",text:"La pista de atletismo rectangular requiere recubrimiento especial a $45.000/m². ¿Cuánto cuesta?",
+   fig:`<div class="q-figure">${svgRect(30,10)}
+        <div class="q-figure-caption">Rectángulo<br>b=30 m · h=10 m</div></div>`,
+   opts:["$13.500.000","$1.350.000","$6.750.000","$27.000.000"],ans:0},
+  {comp:"Razonamiento",text:"El triángulo equilátero tiene b = h = 8 m (altura calculada ≈ 6.93 m). ¿Cuál es su área aproximada?",
+   fig:`<div class="q-figure">${svgTriangle('8 m','6.93 m')}
+        <div class="q-figure-caption">Triángulo<br>b=8 m · h≈6.93 m</div></div>`,
+   opts:["55.44 m²","27.72 m²","64 m²","110.88 m²"],ans:1},
+  {comp:"Resolución de problemas",text:"El círculo es la base de una cisterna. ¿Cuánto cemento se necesita para el piso? (π ≈ 3.14)",
+   fig:`<div class="q-figure">${svgCircle(3)}
+        <div class="q-figure-caption">Círculo<br>r = 3 m</div></div>`,
+   opts:["9.42 m²","28.26 m²","18.84 m²","56.52 m²"],ans:1},
+  {comp:"Comunicación",text:"¿Cuántas veces cabe el área del cuadrado pequeño en el cuadrado grande?",
+   fig:`<div class="q-figure">${svgSquare(2)}${svgSquare(6)}
+        <div class="q-figure-caption">Cuadrado l=2 cm<br>Cuadrado l=6 cm</div></div>`,
+   opts:["3 veces","6 veces","9 veces","12 veces"],ans:2},
+  {comp:"Resolución de problemas",text:"El cubo representa un tarro de pintura. Si tiene l = 2 dm, ¿cuántos litros contiene?",
+   fig:`<div class="q-figure">${svgCube(2)}
+        <div class="q-figure-caption">Cubo<br>l = 2 dm</div></div>`,
+   opts:["4 L","8 L","2 L","16 L"],ans:1},
+  {comp:"Razonamiento",text:"El cubo grande tiene l = 6 cm y el cubo pequeño l = 3 cm. ¿Cuántas veces es mayor el volumen del grande?",
+   fig:`<div class="q-figure">${svgCube(6)}${svgCube(3)}
+        <div class="q-figure-caption">Cubo l=6 cm / Cubo l=3 cm</div></div>`,
+   opts:["2 veces","4 veces","6 veces","8 veces"],ans:3},
+  {comp:"Comunicación",text:"El prisma rectangular es un estanque de peces. ¿Cuántos litros de agua caben? (1 dm³ = 1 L)",
+   fig:`<div class="q-figure">${svgPrism('6 dm','4 dm','3 dm')}
+        <div class="q-figure-caption">Prisma · l=6 dm<br>a=4 dm · h=3 dm</div></div>`,
+   opts:["13 L","36 L","72 L","144 L"],ans:2},
+  {comp:"Resolución de problemas",text:"¿Cuál es el volumen del cilindro? (π ≈ 3.14)",
+   fig:`<div class="q-figure">${svgCylinder(5,4)}
+        <div class="q-figure-caption">Cilindro<br>r=5 cm · h=4 cm</div></div>`,
+   opts:["62.8 cm³","314 cm³","1256 cm³","78.5 cm³"],ans:1},
+  {comp:"Comunicación",text:"El área lateral del cilindro es 2πrh. Con los datos de la figura, ¿cuánto vale? (π ≈ 3.14)",
+   fig:`<div class="q-figure">${svgCylinder(2,9)}
+        <div class="q-figure-caption">Cilindro<br>r=2 cm · h=9 cm</div></div>`,
+   opts:["56.52 cm²","113.04 cm²","25.12 cm²","226.08 cm²"],ans:1},
+  {comp:"Razonamiento",text:"¿Cuál es el volumen de la esfera de la figura? (π ≈ 3.14)",
+   fig:`<div class="q-figure">${svgSphere(6)}
+        <div class="q-figure-caption">Esfera<br>r = 6 cm</div></div>`,
+   opts:["904.32 cm³","113.04 cm³","2411.52 cm³","452.16 cm³"],ans:0},
+  {comp:"Comunicación",text:"Dos esferas: una con r=2 y otra con r=4. ¿Cuántas veces es mayor el volumen de la grande?",
+   fig:`<div class="q-figure">${svgSphere(2)}${svgSphere(4)}
+        <div class="q-figure-caption">Esfera r=2 / Esfera r=4</div></div>`,
+   opts:["2 veces","4 veces","6 veces","8 veces"],ans:3},
+  {comp:"Resolución de problemas",text:"La circunferencia de la rueda tiene d = 56 cm. ¿Cuánto avanza en 100 vueltas? (π ≈ 3.14)",
+   fig:`<div class="q-figure">${svgCircle(28)}
+        <div class="q-figure-caption">Círculo<br>d = 56 cm</div></div>`,
+   opts:["175.84 cm","1758.4 cm","17584 cm","17.584 cm"],ans:2},
+  {comp:"Razonamiento",text:"El prisma tiene A_total = 2(la+lh+ah). Con l=5, a=4, h=3, ¿cuánto vale?",
+   fig:`<div class="q-figure">${svgPrism(5,4,3)}
+        <div class="q-figure-caption">Prisma · l=5<br>a=4 · h=3</div></div>`,
+   opts:["60 cm²","94 cm²","47 cm²","120 cm²"],ans:1},
+  {comp:"Resolución de problemas",text:"Un cubo de hielo (l=4 cm) se derrite en un cilindro (r=5 cm). ¿A qué altura llega el agua? (π≈3.14)",
+   fig:`<div class="q-figure">${svgCube(4)}${svgCylinder(5,4)}
+        <div class="q-figure-caption">Cubo l=4 / Cilindro r=5</div></div>`,
+   opts:["≈0.32 cm","≈0.81 cm","≈1.63 cm","≈3.26 cm"],ans:1},
+]};
+
+// ===================== PIN → VERSION MAPPING (hidden from students) =====================
+const PIN_TO_VERSION = {'347':1,'512':2,'769':3,'284':4};
+
+let selectedVersion = 1;
+let currentPair = {st1:'', st2:'', group:''};   // both students
+let allResults   = JSON.parse(localStorage.getItem('icfes_results')||'[]');
+let quizSubmitted = false;   // single-submit lock
+
+function pinInput(idx){
+  const val=document.getElementById(`pd${idx}`).value;
+  if(val.length===1 && idx<2) document.getElementById(`pd${idx+1}`).focus();
+}
+
+function checkPin(){
+  const st1=(document.getElementById('st-name1').value||'').trim();
+  const st2=(document.getElementById('st-name2').value||'').trim();
+  const grp=document.getElementById('st-group').value;
+  if(!st1){
+    document.getElementById('pin-error').textContent='⚠️ Escribe el nombre del Estudiante 1.'; return;
+  }
+  if(!st2){
+    document.getElementById('pin-error').textContent='⚠️ Escribe el nombre del Estudiante 2.'; return;
+  }
+  if(!grp){
+    document.getElementById('pin-error').textContent='⚠️ Selecciona el grupo.'; return;
+  }
+  const entered=[0,1,2].map(i=>document.getElementById(`pd${i}`).value).join('');
+  const ver=PIN_TO_VERSION[entered];
+  if(ver){
+    selectedVersion = ver;
+    currentPair    = {st1, st2, group:grp};
+    quizSubmitted  = false;
+    document.getElementById('pin-gate').style.display='none';
+    document.getElementById('quiz-content').style.display='block';
+    document.getElementById('student-name-display').innerHTML=
+      `👤 ${st1}<br>👤 ${st2}<span style="margin-left:12px;opacity:0.5;">· ${grp}</span>`;
+    buildQuiz();
+  } else {
+    document.getElementById('pin-error').textContent='❌ PIN incorrecto. Verifica con tu docente.';
+    [0,1,2].forEach(i=>{document.getElementById(`pd${i}`).value='';});
+    document.getElementById('pd0').focus();
+  }
+}
+document.addEventListener('keydown',(e)=>{
+  const gate=document.getElementById('pin-gate');
+  if(e.key==='Enter'&&gate&&gate.style.display!=='none') checkPin();
+});
+
+function finishReview(){
+  // Scroll to very top of page
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ===================== QUIZ ENGINE =====================
+let userAnswers={}, quizStarted=false, timerInterval=null;
+const TOTAL_SECS=35*60;
+let secsLeft=TOTAL_SECS;
+let activeBank=[];
+
+function buildQuiz(){
+  activeBank=banks[selectedVersion];
+  const cont=document.getElementById('quiz-questions');
+  cont.innerHTML=activeBank.map((q,qi)=>`
+    <div class="question-card" id="qcard-${qi}">
+      <div class="q-num">Pregunta ${qi+1}</div>
+      <div class="q-competencia">⚡ ${q.comp}</div>
+      ${q.fig||''}
+      <div class="q-text">${q.text}</div>
+      <div class="q-options">
+        ${q.opts.map((o,oi)=>`
+          <div class="q-option" id="opt-${qi}-${oi}" onclick="selectOpt(${qi},${oi})">
+            <div class="opt-letter">${['A','B','C','D'][oi]}</div>
+            <div>${o}</div>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function selectOpt(qi,oi){
+  if(!quizStarted) return;
+  for(let i=0;i<4;i++){const e=document.getElementById(`opt-${qi}-${i}`);if(e)e.classList.remove('selected');}
+  document.getElementById(`opt-${qi}-${oi}`).classList.add('selected');
+  userAnswers[qi]=oi;
+}
+
+function startQuiz(){
+  quizStarted=true;
+  document.getElementById('start-btn').disabled=true;
+  document.getElementById('start-btn').textContent='⏱ Prueba en curso...';
+  document.getElementById('submit-btn').disabled=false;
+  document.getElementById('timer-display').classList.add('show');
+  document.querySelectorAll('.question-card').forEach(c=>c.classList.add('unlocked'));
+  secsLeft=TOTAL_SECS;
+  updateTimerDisplay();
+  timerInterval=setInterval(()=>{
+    secsLeft--;
+    updateTimerDisplay();
+    if(secsLeft<=0){clearInterval(timerInterval);submitQuiz(true);}
+  },1000);
+}
+
+function updateTimerDisplay(){
+  const m=Math.floor(secsLeft/60).toString().padStart(2,'0');
+  const s=(secsLeft%60).toString().padStart(2,'0');
+  const txt=document.getElementById('timer-text');
+  txt.textContent=`${m}:${s}`;
+  const circ=document.getElementById('timer-circle');
+  const total=289.03;
+  circ.style.strokeDashoffset=total*(1-secsLeft/TOTAL_SECS);
+  if(secsLeft<=300){txt.classList.add('warning');circ.style.stroke='#e74c3c';}
+  else{txt.classList.remove('warning');circ.style.stroke='var(--gold)';}
+}
+
+function submitQuiz(auto=false){
+  // ── Single-submit lock ──
+  if(quizSubmitted){ alert('La prueba ya fue enviada. No es posible enviarla de nuevo.'); return; }
+  quizSubmitted = true;
+
+  if(timerInterval) clearInterval(timerInterval);
+  quizStarted=false;
+
+  // Lock send button permanently; show finish-review button
+  const sb=document.getElementById('submit-btn');
+  sb.disabled=true;
+  sb.textContent='✓ Prueba enviada';
+  sb.style.opacity='0.45';
+  sb.style.cursor='not-allowed';
+  document.getElementById('finish-btn').style.display='inline-block';
+
+  let score=0;
+  const details=[];
+  activeBank.forEach((q,qi)=>{
+    const ans=userAnswers[qi];
+    for(let i=0;i<4;i++){
+      const e=document.getElementById(`opt-${qi}-${i}`);
+      if(!e) continue;
+      e.style.pointerEvents='none';
+      if(i===q.ans) e.classList.add('correct');
+      else if(i===ans&&ans!==q.ans) e.classList.add('wrong');
+    }
+    const correct=(ans===q.ans);
+    if(correct) score++;
+    details.push({q:qi+1,comp:q.comp,correct,
+      selected:ans!=null?['A','B','C','D'][ans]:'—',
+      rightAns:['A','B','C','D'][q.ans]});
+  });
+
+  const ts = new Date().toLocaleString('es-CO');
+  // Save BOTH students individually with the same score
+  [currentPair.st1, currentPair.st2].forEach(name=>{
+    if(!name) return;
+    allResults.push({
+      name, group:currentPair.group,
+      version:selectedVersion, score, total:15,
+      pct:Math.round(score/15*100),
+      time:ts, auto, details
+    });
+  });
+  try{ localStorage.setItem('icfes_results',JSON.stringify(allResults)); }catch(e){}
+  if(document.getElementById('teacher-panel').style.display!=='none') renderTeacherPanel();
+
+  document.getElementById('score-num').textContent=`${score}/15`;
+  let fb,fs;
+  if(score>=13){fb='🏆 ¡Excelente desempeño!';fs='¡Dominan muy bien los conceptos! Listos para el ICFES.';}
+  else if(score>=10){fb='🎯 ¡Muy buen trabajo!';fs='Buen manejo del tema. Repasen los puntos con errores.';}
+  else if(score>=7){fb='📚 Desempeño aceptable';fs='Hay oportunidades de mejora. Practiquen más ejercicios.';}
+  else{fb='💪 Sigan practicando';fs='Repasen la secuencia completa antes de volver a intentarlo.';}
+  if(auto) fb='⏰ Tiempo agotado — '+fb;
+  document.getElementById('feedback-text').textContent=fb;
+  document.getElementById('feedback-sub').textContent=fs;
+  const sc=document.getElementById('quiz-score');
+  sc.classList.add('show');
+  sc.scrollIntoView({behavior:'smooth'});
+}
+
+// resetQuiz removed – students cannot restart after submitting
+function resetQuiz(){ /* disabled */ }
+
+
+// ═══════════════════════ SCIENTIFIC CALCULATOR ENGINE ═══════════════════════
+const calcState = {};   // { cid: { expr:'', history:[] } }
+
+function calcInit(cid){
+  if(!calcState[cid]) calcState[cid]={expr:'',history:[]};
+}
+function calcGetExpr(cid){ calcInit(cid); return calcState[cid].expr; }
+function calcSetExpr(cid,v){ calcInit(cid); calcState[cid].expr=v; calcRefresh(cid); }
+
+function calcRefresh(cid){
+  const expr=calcGetExpr(cid);
+  document.getElementById(cid+'-expr').textContent=expr||'';
+  // Live preview
+  if(expr){
+    try{
+      const preview=calcEval(expr);
+      if(preview!==null&&!isNaN(preview)){
+        document.getElementById(cid+'-res').textContent=
+          String(preview).length>14?preview.toPrecision(10):preview;
+      }
+    }catch(e){}
+  }
+}
+
+function calcEval(expr){
+  // Replace math constants and functions for safe eval
+  let e=expr
+    .replace(/π/g,'Math.PI')
+    .replace(/sin\(/g,'Math.sin(')
+    .replace(/cos\(/g,'Math.cos(')
+    .replace(/tan\(/g,'Math.tan(')
+    .replace(/log\(/g,'Math.log10(')
+    .replace(/ln\(/g,'Math.log(')
+    .replace(/sqrt\(/g,'Math.sqrt(')
+    .replace(/abs\(/g,'Math.abs(')
+    .replace(/\^/g,'**');
+  // eslint-disable-next-line no-new-func
+  return Function('"use strict";return ('+e+')')();
+}
+
+function calcPush(cid,ch){
+  calcInit(cid);
+  calcState[cid].expr+=ch;
+  calcRefresh(cid);
+}
+
+function calcFn(cid,fn){
+  calcInit(cid);
+  const cur=calcState[cid].expr;
+  switch(fn){
+    case 'sin':  calcState[cid].expr+='sin(';  break;
+    case 'cos':  calcState[cid].expr+='cos(';  break;
+    case 'tan':  calcState[cid].expr+='tan(';  break;
+    case 'log':  calcState[cid].expr+='log(';  break;
+    case 'ln':   calcState[cid].expr+='ln(';   break;
+    case 'sqrt': calcState[cid].expr+='sqrt('; break;
+    case 'abs':  calcState[cid].expr+='abs(';  break;
+    case 'pi':   calcState[cid].expr+='π';     break;
+    case 'paren-open':  calcState[cid].expr+='('; break;
+    case 'paren-close': calcState[cid].expr+=')'; break;
+    case 'percent': calcState[cid].expr+='%';  break;
+    case 'pow':  calcState[cid].expr+='^';     break;
+    case 'sq': {
+      // wrap current last number in (...)²
+      const v=calcGetLastNumber(cur);
+      if(v){ calcState[cid].expr=cur.slice(0,cur.length-v.length)+'('+v+')^2'; }
+      else  { calcState[cid].expr+='(ans)^2'; }
+      break;
+    }
+    case 'cube': {
+      const v=calcGetLastNumber(cur);
+      if(v){ calcState[cid].expr=cur.slice(0,cur.length-v.length)+'('+v+')^3'; }
+      else  { calcState[cid].expr+='(ans)^3'; }
+      break;
+    }
+    case 'inv': {
+      const v=calcGetLastNumber(cur);
+      if(v){ calcState[cid].expr=cur.slice(0,cur.length-v.length)+'(1/('+v+'))'; }
+      else  { calcState[cid].expr+='(1/ans)'; }
+      break;
+    }
+    case 'neg': {
+      // toggle sign of last number
+      const v=calcGetLastNumber(cur);
+      if(v){
+        const prefix=cur.slice(0,cur.length-v.length);
+        calcState[cid].expr=v.startsWith('-')
+          ? prefix+v.slice(1)
+          : prefix+'(-'+v+')';
+      }
+      break;
+    }
+  }
+  calcRefresh(cid);
+}
+
+function calcGetLastNumber(expr){
+  // Extract the trailing number (including decimals)
+  const m=expr.match(/([0-9]+\.?[0-9]*)$/);
+  return m?m[1]:null;
+}
+
+function calcDel(cid){
+  calcInit(cid);
+  calcState[cid].expr=calcState[cid].expr.slice(0,-1);
+  calcRefresh(cid);
+  if(!calcState[cid].expr){
+    document.getElementById(cid+'-res').textContent='0';
+  }
+}
+
+function calcAC(cid){
+  calcInit(cid);
+  calcState[cid].expr='';
+  document.getElementById(cid+'-res').textContent='0';
+  document.getElementById(cid+'-expr').textContent='';
+}
+
+function calcEquals(cid){
+  calcInit(cid);
+  const expr=calcGetExpr(cid);
+  if(!expr) return;
+  try{
+    const result=calcEval(expr);
+    if(result===undefined||result===null||isNaN(result)||!isFinite(result)){
+      document.getElementById(cid+'-res').textContent='Error';
+      return;
+    }
+    const rounded=Math.round(result*1e10)/1e10;
+    const display=String(rounded).length>14?rounded.toPrecision(10):rounded;
+    document.getElementById(cid+'-res').textContent=display;
+    // History
+    const histEntry=expr+' = '+display;
+    calcState[cid].history.unshift(histEntry);
+    if(calcState[cid].history.length>8) calcState[cid].history.pop();
+    const histEl=document.getElementById(cid+'-hist');
+    if(histEl) histEl.innerHTML=calcState[cid].history.join('<br>');
+    // Set expression to result for chaining
+    calcState[cid].expr=String(rounded);
+    document.getElementById(cid+'-expr').textContent=histEntry;
+  } catch(e){
+    document.getElementById(cid+'-res').textContent='Error';
+    document.getElementById(cid+'-expr').textContent=expr+' = Error';
+  }
+}
+
+function toggleCalc(cid){
+  const wrap=document.getElementById(cid);
+  const isOpen=wrap.classList.contains('open');
+  // Close all other calculators in the same activity
+  document.querySelectorAll('.calc-wrap').forEach(w=>{
+    if(w.id!==cid) w.classList.remove('open');
+  });
+  wrap.classList.toggle('open',!isOpen);
+  // Init state
+  if(!isOpen) calcInit(cid);
+}
+// ════════════════════════════════════════════════════════════════════════════
+
+// NAV active state
+window.addEventListener('scroll',()=>{
+  const ids=['intro','planas','solidos','calculadoras','actividades','prueba'];
+  let cur='';
+  ids.forEach(id=>{const e=document.getElementById(id);if(e&&e.getBoundingClientRect().top<=110)cur=id;});
+  document.querySelectorAll('.nav-link').forEach(l=>{
+    l.classList.remove('active');
+    if(l.getAttribute('href')==='#'+cur) l.classList.add('active');
+  });
+});
+</script>
+
+<!-- ===== TEACHER PANEL (hidden, accessible via secret key combo) ===== -->
+<style>
+#teacher-panel{
+  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(10,9,15,0.97);z-index:9999;overflow-y:auto;
+  font-family:'DM Sans',sans-serif;color:#f0ebe0;
+}
+#teacher-panel .tp-inner{max-width:1000px;margin:0 auto;padding:40px 30px;}
+.tp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:12px;}
+.tp-header h2{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;}
+.tp-header h2 span{color:#c9974c;}
+.tp-close{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+  color:#fff;border-radius:8px;padding:10px 20px;cursor:pointer;font-size:14px;font-weight:600;}
+.tp-close:hover{background:rgba(255,50,50,0.2);border-color:rgba(255,80,80,0.4);}
+.tp-login{text-align:center;padding:60px 20px;}
+.tp-login h3{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:20px;}
+.tp-pin-wrap{display:flex;justify-content:center;gap:10px;margin-bottom:16px;}
+.tp-pin-digit{
+  width:55px;height:65px;background:rgba(255,255,255,0.08);
+  border:2px solid rgba(255,255,255,0.2);border-radius:10px;
+  font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:700;
+  color:#fff;text-align:center;outline:none;
+}
+.tp-pin-digit:focus{border-color:#c9974c;}
+#tp-pin-err{color:#e74c3c;font-size:13px;min-height:18px;margin-bottom:12px;}
+.tp-btn{background:#c9974c;color:#0f0e17;border:none;border-radius:8px;
+  padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer;
+  font-family:'DM Sans',sans-serif;transition:all .2s;}
+.tp-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,151,76,0.3);}
+.tp-btn.danger{background:#c0392b;color:#fff;}
+.tp-btn.export{background:#1a7a3c;color:#fff;}
+.tp-btn.secondary{background:rgba(255,255,255,0.1);color:#fff;}
+#tp-content{display:none;}
+.tp-tabs{display:flex;gap:0;border-bottom:2px solid rgba(255,255,255,0.1);margin-bottom:28px;overflow-x:auto;}
+.tp-tab{padding:12px 22px;font-size:14px;font-weight:500;cursor:pointer;
+  border-bottom:2px solid transparent;margin-bottom:-2px;color:rgba(255,255,255,0.5);
+  transition:all .2s;white-space:nowrap;}
+.tp-tab.active{color:#c9974c;border-bottom-color:#c9974c;font-weight:700;}
+.tp-section{display:none;}
+.tp-section.active{display:block;}
+.tp-stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:28px;}
+.tp-stat{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+  border-radius:10px;padding:16px;text-align:center;}
+.tp-stat .tn{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:#c9974c;}
+.tp-stat .tl{font-size:11px;opacity:0.5;letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
+.tp-group-filter{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:center;}
+.tp-group-filter label{font-size:13px;opacity:0.6;}
+.tp-group-filter select{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
+  border-radius:6px;padding:8px 12px;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;}
+.tp-table{width:100%;border-collapse:collapse;font-size:13px;}
+.tp-table th{background:rgba(255,255,255,0.08);padding:10px 14px;text-align:left;
+  font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:0.6;}
+.tp-table td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.tp-table tr:hover td{background:rgba(255,255,255,0.04);}
+.score-pill{display:inline-block;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:700;}
+.score-high{background:rgba(39,174,96,0.25);color:#2ecc71;}
+.score-mid{background:rgba(243,156,18,0.25);color:#f39c12;}
+.score-low{background:rgba(231,76,60,0.25);color:#e74c3c;}
+.tp-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px;}
+.tp-empty{text-align:center;padding:40px;opacity:0.4;font-size:14px;}
+.group-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+.group-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
+  border-radius:12px;padding:20px;}
+.group-card h4{font-size:15px;font-weight:700;color:#c9974c;margin-bottom:12px;}
+.group-card .gc-stat{display:flex;justify-content:space-between;font-size:13px;
+  padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
+.group-card .gc-stat:last-child{border-bottom:none;}
+.group-card .gc-val{font-weight:700;color:#c9974c;}
+</style>
+
+<div id="teacher-panel">
+  <div class="tp-inner">
+    <div class="tp-header">
+      <h2>Panel del <span>Docente</span></h2>
+      <button class="tp-close" onclick="closeTeacher()">✕ Cerrar panel</button>
+    </div>
+    <!-- Login -->
+    <div id="tp-login">
+      <div class="tp-login">
+        <h3>🔑 Acceso Docente</h3>
+        <p style="font-size:13px;opacity:0.5;margin-bottom:24px;">Ingresa el PIN maestro de 4 dígitos</p>
+        <div class="tp-pin-wrap">
+          <input class="tp-pin-digit" type="password" maxlength="1" inputmode="numeric" id="tpd0" oninput="tpPinInput(0)">
+          <input class="tp-pin-digit" type="password" maxlength="1" inputmode="numeric" id="tpd1" oninput="tpPinInput(1)">
+          <input class="tp-pin-digit" type="password" maxlength="1" inputmode="numeric" id="tpd2" oninput="tpPinInput(2)">
+          <input class="tp-pin-digit" type="password" maxlength="1" inputmode="numeric" id="tpd3" oninput="tpPinInput(3)">
+        </div>
+        <div id="tp-pin-err"></div>
+        <button class="tp-btn" onclick="checkTeacherPin()">Entrar al Panel</button>
+        <p style="font-size:11px;opacity:0.3;margin-top:20px;">Para abrir: Ctrl+Shift+P</p>
+      </div>
+    </div>
+    <!-- Content -->
+    <div id="tp-content">
+      <div class="tp-tabs">
+        <div class="tp-tab active" onclick="tpTab('general')">📊 Resumen General</div>
+        <div class="tp-tab" onclick="tpTab('groups')">👥 Por Grupos</div>
+        <div class="tp-tab" onclick="tpTab('individual')">📋 Lista Individual</div>
+        <div class="tp-tab" onclick="tpTab('config')">⚙️ Configuración</div>
+      </div>
+      <!-- GENERAL -->
+      <div class="tp-section active" id="tp-general">
+        <div class="tp-stats-grid" id="tp-stats-grid"></div>
+        <div class="tp-actions">
+          <button class="tp-btn export" onclick="downloadXLSX('all')">⬇️ Descargar Todo (Excel)</button>
+          <button class="tp-btn secondary" onclick="renderTeacherPanel()">🔄 Actualizar</button>
+          <button class="tp-btn danger" onclick="clearResults()">🗑️ Borrar todos los datos</button>
+        </div>
+      </div>
+      <!-- GROUPS -->
+      <div class="tp-section" id="tp-groups">
+        <div class="group-summary" id="tp-group-cards"></div>
+        <div class="tp-actions" style="margin-top:24px;">
+          <button class="tp-btn export" onclick="downloadXLSX('groups')">⬇️ Resumen por Grupos (Excel)</button>
+        </div>
+      </div>
+      <!-- INDIVIDUAL -->
+      <div class="tp-section" id="tp-individual">
+        <div class="tp-group-filter">
+          <label>Filtrar por grupo:</label>
+          <select id="tp-filter-grp" onchange="renderIndividual()">
+            <option value="">Todos los grupos</option>
+            <option value="Grupo 1">Grupo 1</option>
+            <option value="Grupo 2">Grupo 2</option>
+            <option value="Grupo 3">Grupo 3</option>
+            <option value="Grupo 4">Grupo 4</option>
+            <option value="Grupo 5">Grupo 5</option>
+            <option value="Grupo 6">Grupo 6</option>
+          </select>
+        </div>
+        <div id="tp-individual-table"></div>
+        <div class="tp-actions">
+          <button class="tp-btn export" onclick="downloadXLSX('individual')">⬇️ Lista Individual (Excel)</button>
+        </div>
+      </div>
+      <!-- CONFIG -->
+      <div class="tp-section" id="tp-config">
+        <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:24px;margin-bottom:20px;">
+          <h4 style="color:#c9974c;margin-bottom:16px;font-size:15px;">🔐 PINs de estudiantes por versión</h4>
+          <table class="tp-table">
+            <thead><tr><th>Versión</th><th>PIN del estudiante</th><th>Descripción</th></tr></thead>
+            <tbody>
+              <tr><td>Versión 1</td><td style="font-family:'JetBrains Mono',monospace;color:#c9974c;font-size:16px;font-weight:700;">347</td><td style="opacity:0.5;">Entrega a filas impares, columna A</td></tr>
+              <tr><td>Versión 2</td><td style="font-family:'JetBrains Mono',monospace;color:#c9974c;font-size:16px;font-weight:700;">512</td><td style="opacity:0.5;">Entrega a filas impares, columna B</td></tr>
+              <tr><td>Versión 3</td><td style="font-family:'JetBrains Mono',monospace;color:#c9974c;font-size:16px;font-weight:700;">769</td><td style="opacity:0.5;">Entrega a filas pares, columna A</td></tr>
+              <tr><td>Versión 4</td><td style="font-family:'JetBrains Mono',monospace;color:#c9974c;font-size:16px;font-weight:700;">284</td><td style="opacity:0.5;">Entrega a filas pares, columna B</td></tr>
+            </tbody>
+          </table>
+          <p style="margin-top:16px;font-size:12px;opacity:0.35;">Los estudiantes no saben que existen 4 versiones. Solo ven el campo PIN.</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:24px;">
+          <h4 style="color:#c9974c;margin-bottom:12px;font-size:15px;">🔑 PIN Maestro del Docente</h4>
+          <p style="font-size:13px;opacity:0.5;margin-bottom:8px;">Su PIN actual: <span style="font-family:'JetBrains Mono',monospace;color:#c9974c;font-size:18px;font-weight:700;">8521</span></p>
+          <p style="font-size:12px;opacity:0.35;">Atajo de teclado: Ctrl + Shift + P</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+// ===================== TEACHER PANEL =====================
+const TEACHER_PIN = '8521';
+let teacherLoggedIn = false;
+
+// Open with Ctrl+Shift+P
+document.addEventListener('keydown',(e)=>{
+  if(e.ctrlKey && e.shiftKey && e.key==='P'){
+    e.preventDefault();
+    document.getElementById('teacher-panel').style.display='block';
+    if(!teacherLoggedIn){document.getElementById('tpd0').focus();}
+    else renderTeacherPanel();
+  }
+});
+function closeTeacher(){
+  document.getElementById('teacher-panel').style.display='none';
+}
+function tpPinInput(idx){
+  const val=document.getElementById(`tpd${idx}`).value;
+  if(val.length===1 && idx<3) document.getElementById(`tpd${idx+1}`).focus();
+}
+function checkTeacherPin(){
+  const entered=[0,1,2,3].map(i=>document.getElementById(`tpd${i}`).value).join('');
+  if(entered===TEACHER_PIN){
+    teacherLoggedIn=true;
+    document.getElementById('tp-login').style.display='none';
+    document.getElementById('tp-content').style.display='block';
+    allResults=JSON.parse(localStorage.getItem('icfes_results')||'[]');
+    renderTeacherPanel();
+  } else {
+    document.getElementById('tp-pin-err').textContent='❌ PIN incorrecto';
+    [0,1,2,3].forEach(i=>{document.getElementById(`tpd${i}`).value='';});
+    document.getElementById('tpd0').focus();
+  }
+}
+function tpTab(id){
+  document.querySelectorAll('.tp-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tp-section').forEach(s=>s.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tp-'+id).classList.add('active');
+  if(id==='individual') renderIndividual();
+  if(id==='groups') renderGroupCards();
+  if(id==='general') renderGeneral();
+}
+function renderTeacherPanel(){
+  allResults=JSON.parse(localStorage.getItem('icfes_results')||'[]');
+  renderGeneral();
+}
+function renderGeneral(){
+  const n=allResults.length;
+  const avg=n?Math.round(allResults.reduce((a,r)=>a+r.score,0)/n*100)/100:0;
+  const high=allResults.filter(r=>r.score>=13).length;
+  const groups=[...new Set(allResults.map(r=>r.group))].length;
+  document.getElementById('tp-stats-grid').innerHTML=`
+    <div class="tp-stat"><div class="tn">${n}</div><div class="tl">Estudiantes</div></div>
+    <div class="tp-stat"><div class="tn">${avg}/15</div><div class="tl">Promedio</div></div>
+    <div class="tp-stat"><div class="tn">${high}</div><div class="tl">Excelente (≥13)</div></div>
+    <div class="tp-stat"><div class="tn">${groups}</div><div class="tl">Grupos activos</div></div>
+    <div class="tp-stat"><div class="tn">${Math.round(avg/15*100)}%</div><div class="tl">Aprobación</div></div>
+    <div class="tp-stat"><div class="tn">${allResults.filter(r=>r.auto).length}</div><div class="tl">Tiempo agotado</div></div>
+  `;
+}
+function renderGroupCards(){
+  const groups=['Grupo 1','Grupo 2','Grupo 3','Grupo 4','Grupo 5','Grupo 6'];
+  let html='';
+  groups.forEach(g=>{
+    const gr=allResults.filter(r=>r.group===g);
+    if(!gr.length) return;
+    const avg=Math.round(gr.reduce((a,r)=>a+r.score,0)/gr.length*10)/10;
+    const high=gr.filter(r=>r.score>=13).length;
+    const mid=gr.filter(r=>r.score>=10&&r.score<13).length;
+    const low=gr.filter(r=>r.score<10).length;
+    html+=`<div class="group-card">
+      <h4>${g}</h4>
+      <div class="gc-stat"><span>Estudiantes</span><span class="gc-val">${gr.length}</span></div>
+      <div class="gc-stat"><span>Promedio</span><span class="gc-val">${avg}/15</span></div>
+      <div class="gc-stat"><span>% Aprobación</span><span class="gc-val">${Math.round(avg/15*100)}%</span></div>
+      <div class="gc-stat"><span>Excelente (≥13)</span><span class="gc-val">${high}</span></div>
+      <div class="gc-stat"><span>Aceptable (10-12)</span><span class="gc-val">${mid}</span></div>
+      <div class="gc-stat"><span>Bajo (&lt;10)</span><span class="gc-val">${low}</span></div>
+    </div>`;
+  });
+  document.getElementById('tp-group-cards').innerHTML=html||'<div class="tp-empty">Sin resultados aún</div>';
+}
+function renderIndividual(){
+  const fgrp=document.getElementById('tp-filter-grp').value;
+  const data=fgrp?allResults.filter(r=>r.group===fgrp):allResults;
+  if(!data.length){
+    document.getElementById('tp-individual-table').innerHTML='<div class="tp-empty">Sin resultados para este filtro</div>';
+    return;
+  }
+  const sorted=[...data].sort((a,b)=>a.group.localeCompare(b.group)||a.name.localeCompare(b.name));
+  let html=`<div style="overflow-x:auto;"><table class="tp-table">
+    <thead><tr><th>#</th><th>Apellidos y Nombres</th><th>Grupo</th><th>Puntaje</th><th>%</th><th>Desempeño</th><th>Fecha/Hora</th></tr></thead><tbody>`;
+  sorted.forEach((r,i)=>{
+    const cls=r.score>=13?'score-high':r.score>=10?'score-mid':'score-low';
+    const des=r.score>=13?'Excelente':r.score>=10?'Muy bueno':r.score>=7?'Aceptable':'Bajo';
+    html+=`<tr>
+      <td style="opacity:0.4;">${i+1}</td>
+      <td style="font-weight:600;">${r.name}</td>
+      <td>${r.group}</td>
+      <td><span class="score-pill ${cls}">${r.score}/15</span></td>
+      <td>${r.pct}%</td>
+      <td><span class="score-pill ${cls}">${des}</span></td>
+      <td style="font-size:11px;opacity:0.5;">${r.time}</td>
+    </tr>`;
+  });
+  html+='</tbody></table></div>';
+  document.getElementById('tp-individual-table').innerHTML=html;
+}
+// ── Excel download via SheetJS ──────────────────────────────────────────────────
+function buildIndividualRows(dataArr){
+  const header=['#','Apellidos y Nombres','Grupo','Puntaje','Total','Porcentaje','Desempeño','Fecha / Hora','Tiempo agotado'];
+  const rows=[header];
+  const sorted=[...dataArr].sort((a,b)=>a.group.localeCompare(b.group)||a.name.localeCompare(b.name));
+  sorted.forEach((r,i)=>{
+    const des=r.score>=13?'Excelente':r.score>=10?'Muy bueno':r.score>=7?'Aceptable':'Bajo';
+    rows.push([i+1, r.name, r.group, r.score, 15, r.pct+'%', des, r.time, r.auto?'Sí':'No']);
+  });
+  return rows;
+}
+function buildGroupRows(){
+  const header=['Grupo','Estudiantes','Promedio','Promedio %','Excelente (≥13)','Muy bueno (10-12)','Bajo (<10)'];
+  const rows=[header];
+  ['Grupo 1','Grupo 2','Grupo 3','Grupo 4','Grupo 5','Grupo 6'].forEach(g=>{
+    const gr=allResults.filter(r=>r.group===g);
+    if(!gr.length) return;
+    const avg=Math.round(gr.reduce((a,r)=>a+r.score,0)/gr.length*10)/10;
+    rows.push([g,gr.length,avg,Math.round(avg/15*100)+'%',
+      gr.filter(r=>r.score>=13).length,
+      gr.filter(r=>r.score>=10&&r.score<13).length,
+      gr.filter(r=>r.score<10).length]);
+  });
+  return rows;
+}
+
+function sheetFromRows(rows){
+  /* Build a worksheet object from a 2-D array */
+  const ws={};
+  const range={s:{r:0,c:0},e:{r:rows.length-1,c:rows[0].length-1}};
+  rows.forEach((row,R)=>{
+    row.forEach((val,C)=>{
+      const addr=XLSX.utils.encode_cell({r:R,c:C});
+      const t=typeof val==='number'?'n':'s';
+      ws[addr]={v:val,t};
+    });
+  });
+  ws['!ref']=XLSX.utils.encode_range(range);
+  // Column widths
+  ws['!cols']=rows[0].map((_,i)=>{
+    const max=Math.max(...rows.map(r=>String(r[i]||'').length));
+    return {wch:Math.min(Math.max(max+2,10),50)};
+  });
+  return ws;
+}
+
+function downloadXLSX(type){
+  allResults=JSON.parse(localStorage.getItem('icfes_results')||'[]');
+  if(!allResults.length){alert('No hay resultados aún.');return;}
+
+  // Check SheetJS available
+  if(typeof XLSX==='undefined'){
+    alert('La librería Excel aún está cargando. Intenta en unos segundos.');return;
+  }
+
+  const wb=XLSX.utils.book_new();
+  const ts=new Date().toLocaleString('es-CO').replace(/[/:]/g,'-').replace(/ /g,'_');
+
+  if(type==='all'){
+    // Sheet 1: All individual results
+    const ws1=sheetFromRows(buildIndividualRows(allResults));
+    XLSX.utils.book_append_sheet(wb,ws1,'Resultados individuales');
+    // Sheet 2: Group summary
+    const ws2=sheetFromRows(buildGroupRows());
+    XLSX.utils.book_append_sheet(wb,ws2,'Resumen por grupos');
+    XLSX.writeFile(wb,`Resultados_ICFES_${ts}.xlsx`);
+
+  } else if(type==='individual'){
+    const fgrp=document.getElementById('tp-filter-grp').value;
+    const data=fgrp?allResults.filter(r=>r.group===fgrp):allResults;
+    const ws=sheetFromRows(buildIndividualRows(data));
+    XLSX.utils.book_append_sheet(wb,ws,fgrp||'Todos los grupos');
+    XLSX.writeFile(wb,`Resultados_${fgrp||'Todos'}_${ts}.xlsx`);
+
+  } else if(type==='groups'){
+    const ws=sheetFromRows(buildGroupRows());
+    XLSX.utils.book_append_sheet(wb,ws,'Resumen por grupos');
+    XLSX.writeFile(wb,`ResumenGrupos_${ts}.xlsx`);
+  }
+}
+// Legacy alias kept for any remaining button references
+function downloadCSV(type){ downloadXLSX(type); }
+function clearResults(){
+  if(!confirm('¿Borrar TODOS los resultados? Esta acción no se puede deshacer.')) return;
+  allResults=[];
+  localStorage.removeItem('icfes_results');
+  renderTeacherPanel();
+  renderGroupCards();
+  renderIndividual();
+  alert('Resultados borrados.');
+}
+</script>
+</body>
+</html>
