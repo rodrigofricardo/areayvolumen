@@ -2130,6 +2130,10 @@ function toggleCalc(cid){
 
 
 // ═══════════════════════ GOOGLE SHEETS WEBHOOK ENGINE ════════════════════════
+// Técnica: GET con parámetros en la URL.
+// Apps Script recibe e.parameter sin problemas de CORS.
+// Se usa <img> para disparar la petición — no bloquea, no lanza errores CORS,
+// y Apps Script la recibe y escribe en Sheets.
 const GS_KEY = 'icfes_sheets_url';
 
 function getSheetsUrl(){
@@ -2144,46 +2148,65 @@ function formatTimeUsed(secs){
   return `${m}:${ss}`;
 }
 
-// Send ONE student record to Google Sheets via Apps Script webhook
-async function sendToGoogleSheets(record){
+// Build GET URL with all record fields as query params
+function buildGetUrl(baseUrl, record){
+  const p = new URLSearchParams({
+    name:     record.name     || '',
+    group:    record.group    || '',
+    score:    record.score    != null ? record.score    : '',
+    total:    record.total    != null ? record.total    : 15,
+    pct:      record.pct      != null ? record.pct      : '',
+    timeUsed: record.timeUsed || '',
+    time:     record.time     || '',
+    auto:     record.auto     ? '1' : '0',
+    action:   'save'
+  });
+  return baseUrl + '?' + p.toString();
+}
+
+// Send ONE student record using an invisible <img> GET request.
+// This technique bypasses CORS entirely — the browser loads the URL
+// as if it were an image; Apps Script handles it in doGet().
+function sendToGoogleSheets(record){
   const url = getSheetsUrl();
-  if(!url) return;   // not configured — skip silently
+  if(!url) return;
   try{
-    // Use no-cors so the browser doesn't block the request from a local file
-    await fetch(url, {
-      method: 'POST',
-      mode:   'no-cors',
-      headers:{ 'Content-Type': 'application/json' },
-      body:   JSON.stringify(record)
-    });
-    // no-cors returns opaque response — we can't read it, but the data arrives
+    const fullUrl = buildGetUrl(url, record);
+    const img = new Image();
+    img.src = fullUrl;
+    // No error handling needed — fire-and-forget
   } catch(err){
-    console.warn('Google Sheets sync failed:', err.message);
+    console.warn('Sheets send failed:', err.message);
   }
 }
 
-// Teacher: test connection to webhook
+// Teacher: verify connection (opens URL in new tab so we can see the JSON response)
 async function testSheetsConnection(){
-  const url = document.getElementById('tp-sheets-url').value.trim();
+  const rawUrl = document.getElementById('tp-sheets-url').value.trim();
   const statusEl = document.getElementById('tp-sync-status');
-  if(!url){ statusEl.innerHTML='<span style="color:#e74c3c;">⚠️ Ingresa primero la URL del script.</span>'; return; }
-  statusEl.innerHTML='<span style="color:#f39c12;">⏳ Verificando conexión...</span>';
-  try{
-    const res = await fetch(url, { method:'GET', mode:'cors' });
-    const json = await res.json();
-    if(json.status==='ok'){
-      localStorage.setItem(GS_KEY, url);
-      document.getElementById('tp-sheets-url').value = url;
-      statusEl.innerHTML='<span style="color:#2ecc71;">✅ Conexión exitosa. URL guardada. Los resultados ya se enviarán a Google Sheets.</span>';
-    } else {
-      statusEl.innerHTML=`<span style="color:#e74c3c;">❌ Respuesta inesperada: ${JSON.stringify(json)}</span>`;
-    }
-  } catch(err){
-    // Si falla por CORS (modo cors), intentar guardar de todas formas
-    // ya que no-cors no permite leer la respuesta pero la petición puede llegar
-    localStorage.setItem(GS_KEY, url);
-    statusEl.innerHTML='<span style="color:#c9974c;">⚠️ No se pudo verificar (restricción CORS en este navegador), pero la URL fue guardada. Envía una prueba de prueba para confirmar que llega a Sheets.</span>';
+  if(!rawUrl){
+    statusEl.innerHTML='<span style="color:#e74c3c;">⚠️ Ingresa primero la URL del script.</span>';
+    return;
   }
+  // Save the URL immediately
+  localStorage.setItem(GS_KEY, rawUrl);
+  statusEl.innerHTML='<span style="color:#f39c12;">⏳ Enviando registro de prueba...</span>';
+
+  // Send a test record using the same img technique
+  sendToGoogleSheets({
+    name:'PRUEBA DE CONEXIÓN', group:'Test', score:15, total:15,
+    pct:100, timeUsed:'0:00', time:new Date().toLocaleString('es-CO'), auto:false
+  });
+
+  // After 2 seconds tell user to check Sheets
+  setTimeout(()=>{
+    statusEl.innerHTML=`
+      <span style="color:#2ecc71;">
+        ✅ URL guardada. Se envió un registro de prueba llamado <strong>PRUEBA DE CONEXIÓN</strong>.<br>
+        Abre tu hoja de Google Sheets y verifica que aparezca esa fila.<br>
+        Si no aparece en 10 segundos, revisa que la implementación esté publicada con acceso <em>"Cualquier persona"</em>.
+      </span>`;
+  }, 2000);
 }
 
 function loadSheetsUrlToUI(){
@@ -2192,7 +2215,6 @@ function loadSheetsUrlToUI(){
   if(inp && url) inp.value = url;
 }
 
-// Stub — kept so existing calls don't break
 function clearCloudBin(){
   if(!confirm('¿Borrar TODOS los resultados locales?')) return;
   allResults=[];
