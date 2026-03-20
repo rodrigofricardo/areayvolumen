@@ -1893,16 +1893,30 @@ function submitQuiz(auto=false){
   sb.style.cursor='not-allowed';
   document.getElementById('finish-btn').style.display='inline-block';
 
+  // ── Snapshot answers BEFORE any DOM changes (prevents race conditions) ──
+  const answersSnapshot = Object.assign({}, userAnswers);
+
   let score=0;
   const details=[];
   activeBank.forEach((q,qi)=>{
-    const ans=userAnswers[qi];
+    const ans = answersSnapshot[qi]; // use frozen snapshot, not live object
+    // Step 1: disable all options
     for(let i=0;i<4;i++){
       const e=document.getElementById(`opt-${qi}-${i}`);
-      if(!e) continue;
-      e.style.pointerEvents='none';
-      if(i===q.ans) e.classList.add('correct');
-      else if(i===ans&&ans!==q.ans) e.classList.add('wrong');
+      if(e) e.style.pointerEvents='none';
+    }
+    // Step 2: mark correct answer
+    const correctEl=document.getElementById(`opt-${qi}-${q.ans}`);
+    if(correctEl) correctEl.classList.add('correct');
+    // Step 3: mark student's wrong answer (only if different from correct)
+    if(ans!=null && ans!==q.ans){
+      const wrongEl=document.getElementById(`opt-${qi}-${ans}`);
+      if(wrongEl) wrongEl.classList.add('wrong');
+    }
+    // Step 4: if student answered correctly, also keep 'selected' highlight
+    if(ans!=null && ans===q.ans){
+      const selEl=document.getElementById(`opt-${qi}-${ans}`);
+      if(selEl) selEl.classList.add('selected');
     }
     const correct=(ans===q.ans);
     if(correct) score++;
@@ -1922,7 +1936,19 @@ function submitQuiz(auto=false){
       time:ts, auto, details
     });
   });
+  // ── Save locally ──
   try{ localStorage.setItem('icfes_results',JSON.stringify(allResults)); }catch(e){}
+  // ── Send to Google Sheets (both students individually) ──
+  const timeUsed = formatTimeUsed(TOTAL_SECS - secsLeft);
+  [currentPair.st1, currentPair.st2].filter(Boolean).forEach(name=>{
+    sendToGoogleSheets({
+      name, group:currentPair.group,
+      score, total:15,
+      pct:Math.round(score/15*100),
+      time:new Date().toLocaleString('es-CO'),
+      timeUsed, auto
+    });
+  });
   if(document.getElementById('teacher-panel').style.display!=='none') renderTeacherPanel();
 
   document.getElementById('score-num').textContent=`${score}/15`;
@@ -2102,6 +2128,83 @@ function toggleCalc(cid){
 }
 // ════════════════════════════════════════════════════════════════════════════
 
+
+// ═══════════════════════ GOOGLE SHEETS WEBHOOK ENGINE ════════════════════════
+const GS_KEY = 'icfes_sheets_url';
+
+function getSheetsUrl(){
+  return localStorage.getItem(GS_KEY) || '';
+}
+
+// Format elapsed seconds as mm:ss
+function formatTimeUsed(secs){
+  const s = Math.max(0, Math.round(secs));
+  const m = Math.floor(s/60);
+  const ss = String(s%60).padStart(2,'0');
+  return `${m}:${ss}`;
+}
+
+// Send ONE student record to Google Sheets via Apps Script webhook
+async function sendToGoogleSheets(record){
+  const url = getSheetsUrl();
+  if(!url) return;   // not configured — skip silently
+  try{
+    // Use no-cors so the browser doesn't block the request from a local file
+    await fetch(url, {
+      method: 'POST',
+      mode:   'no-cors',
+      headers:{ 'Content-Type': 'application/json' },
+      body:   JSON.stringify(record)
+    });
+    // no-cors returns opaque response — we can't read it, but the data arrives
+  } catch(err){
+    console.warn('Google Sheets sync failed:', err.message);
+  }
+}
+
+// Teacher: test connection to webhook
+async function testSheetsConnection(){
+  const url = document.getElementById('tp-sheets-url').value.trim();
+  const statusEl = document.getElementById('tp-sync-status');
+  if(!url){ statusEl.innerHTML='<span style="color:#e74c3c;">⚠️ Ingresa primero la URL del script.</span>'; return; }
+  statusEl.innerHTML='<span style="color:#f39c12;">⏳ Verificando conexión...</span>';
+  try{
+    const res = await fetch(url, { method:'GET', mode:'cors' });
+    const json = await res.json();
+    if(json.status==='ok'){
+      localStorage.setItem(GS_KEY, url);
+      document.getElementById('tp-sheets-url').value = url;
+      statusEl.innerHTML='<span style="color:#2ecc71;">✅ Conexión exitosa. URL guardada. Los resultados ya se enviarán a Google Sheets.</span>';
+    } else {
+      statusEl.innerHTML=`<span style="color:#e74c3c;">❌ Respuesta inesperada: ${JSON.stringify(json)}</span>`;
+    }
+  } catch(err){
+    // Si falla por CORS (modo cors), intentar guardar de todas formas
+    // ya que no-cors no permite leer la respuesta pero la petición puede llegar
+    localStorage.setItem(GS_KEY, url);
+    statusEl.innerHTML='<span style="color:#c9974c;">⚠️ No se pudo verificar (restricción CORS en este navegador), pero la URL fue guardada. Envía una prueba de prueba para confirmar que llega a Sheets.</span>';
+  }
+}
+
+function loadSheetsUrlToUI(){
+  const url = getSheetsUrl();
+  const inp = document.getElementById('tp-sheets-url');
+  if(inp && url) inp.value = url;
+}
+
+// Stub — kept so existing calls don't break
+function clearCloudBin(){
+  if(!confirm('¿Borrar TODOS los resultados locales?')) return;
+  allResults=[];
+  localStorage.removeItem('icfes_results');
+  renderTeacherPanel(); renderGroupCards(); renderIndividual();
+  const s2=document.getElementById('tp-sync-status2');
+  if(s2) s2.innerHTML='<span style="color:#f39c12;">🗑️ Datos locales borrados.</span>';
+}
+function clearResults(){ clearCloudBin(); }
+function loadCloudConfigToUI(){ loadSheetsUrlToUI(); }
+// ═════════════════════════════════════════════════════════════════════════════
+
 // NAV active state
 window.addEventListener('scroll',()=>{
   const ids=['intro','planas','solidos','calculadoras','actividades','prueba'];
@@ -2216,11 +2319,15 @@ window.addEventListener('scroll',()=>{
       </div>
       <!-- GENERAL -->
       <div class="tp-section active" id="tp-general">
+        <div style="background:rgba(39,174,96,0.08);border:1px solid rgba(39,174,96,0.25);border-radius:10px;padding:12px 18px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+          <div id="tp-sync-status2" style="font-size:13px;opacity:0.8;">📊 Los resultados llegan en tiempo real desde Google Sheets · Configura la URL en ⚙️ Configuración</div>
+          <button class="tp-btn secondary" onclick="renderTeacherPanel()" style="padding:9px 18px;font-size:13px;">🔄 Actualizar vista local</button>
+        </div>
         <div class="tp-stats-grid" id="tp-stats-grid"></div>
         <div class="tp-actions">
           <button class="tp-btn export" onclick="downloadXLSX('all')">⬇️ Descargar Todo (Excel)</button>
-          <button class="tp-btn secondary" onclick="renderTeacherPanel()">🔄 Actualizar</button>
-          <button class="tp-btn danger" onclick="clearResults()">🗑️ Borrar todos los datos</button>
+          <button class="tp-btn secondary" onclick="renderTeacherPanel()">🔄 Actualizar datos locales</button>
+          <button class="tp-btn danger" onclick="clearCloudBin()">🗑️ Borrar todos los datos</button>
         </div>
       </div>
       <!-- GROUPS -->
@@ -2251,19 +2358,58 @@ window.addEventListener('scroll',()=>{
       </div>
       <!-- CONFIG -->
       <div class="tp-section" id="tp-config">
+
+        <!-- 📊 Google Sheets sync setup -->
+        <div style="background:rgba(39,174,96,0.1);border:1px solid rgba(39,174,96,0.3);border-radius:12px;padding:24px;margin-bottom:20px;">
+          <h4 style="color:#7fd47f;margin-bottom:8px;font-size:15px;">📊 Conexión con Google Sheets</h4>
+          <p style="font-size:13px;opacity:0.7;margin-bottom:16px;line-height:1.8;">
+            Los resultados de cada estudiante se enviarán automáticamente a tu hoja de cálculo de Google en tiempo real.<br>
+            Sigue estos pasos <strong>una sola vez</strong>:
+          </p>
+          <ol style="font-size:13px;opacity:0.75;line-height:2;padding-left:20px;margin-bottom:18px;">
+            <li>Abre tu hoja de Google Sheets (o crea una nueva)</li>
+            <li>Ve a <strong>Extensiones → Apps Script</strong></li>
+            <li>Borra el código de ejemplo y pega el código del archivo <strong>.gs</strong> entregado</li>
+            <li>Guarda (Ctrl+S) y haz clic en <strong>Implementar → Nueva implementación</strong></li>
+            <li>Tipo: <em>Aplicación web</em> · Ejecutar como: <em>Yo</em> · Acceso: <em>Cualquier persona</em></li>
+            <li>Haz clic en <strong>Implementar</strong>, autoriza y copia la <strong>URL de la aplicación web</strong></li>
+            <li>Pega esa URL aquí abajo y haz clic en <strong>Guardar y verificar</strong></li>
+          </ol>
+          <div style="margin-bottom:12px;">
+            <label style="font-size:11px;font-weight:700;letter-spacing:1px;opacity:0.6;display:block;margin-bottom:8px;">URL DEL SCRIPT DE GOOGLE (Apps Script Web App URL)</label>
+            <input id="tp-sheets-url" type="text"
+              placeholder="https://script.google.com/macros/s/XXXXXX/exec"
+              style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);
+                     border-radius:7px;padding:10px 14px;color:#fff;font-family:'JetBrains Mono',monospace;
+                     font-size:12px;outline:none;box-sizing:border-box;">
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+            <button class="tp-btn" onclick="testSheetsConnection()" style="background:rgba(39,174,96,0.7);color:#fff;">✅ Guardar y verificar conexión</button>
+            <button class="tp-btn secondary" onclick="loadSheetsUrlToUI()">📋 Cargar URL guardada</button>
+          </div>
+          <div id="tp-sync-status" style="font-size:13px;min-height:20px;line-height:1.6;"></div>
+          <div style="margin-top:14px;padding:12px 14px;background:rgba(255,255,255,0.04);border-radius:7px;font-size:12px;opacity:0.55;line-height:1.7;">
+            ℹ️ Cada vez que un estudiante envía la prueba, su resultado aparece automáticamente en tu hoja de Google Sheets.<br>
+            La hoja tendrá dos pestañas: <strong>Resultados</strong> (individual) y <strong>Resumen por Grupo</strong> (consolidado).
+          </div>
+        </div>
+
+        <!-- 🔐 PINs -->
         <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:24px;margin-bottom:20px;">
           <h4 style="color:#c9974c;margin-bottom:16px;font-size:15px;">🔐 PINs de estudiantes por versión</h4>
           <table class="tp-table">
-            <thead><tr><th>Versión</th><th>PIN del estudiante</th><th>Descripción</th></tr></thead>
+            <thead><tr><th>Versión</th><th>PIN del estudiante</th><th>Sugerencia de uso</th></tr></thead>
             <tbody>
-              <tr><td>Versión 1</td><td style="font-family:'JetBrains Mono',monospace;color:#c9974c;font-size:16px;font-weight:700;">347</td><td style="opacity:0.5;">Entrega a filas impares, columna A</td></tr>
-              <tr><td>Versión 2</td><td style="font-family:'JetBrains Mono',monospace;color:#c9974c;font-size:16px;font-weight:700;">512</td><td style="opacity:0.5;">Entrega a filas impares, columna B</td></tr>
-              <tr><td>Versión 3</td><td style="font-family:'JetBrains Mono',monospace;color:#c9974c;font-size:16px;font-weight:700;">769</td><td style="opacity:0.5;">Entrega a filas pares, columna A</td></tr>
-              <tr><td>Versión 4</td><td style="font-family:'JetBrains Mono',monospace;color:#c9974c;font-size:16px;font-weight:700;">284</td><td style="opacity:0.5;">Entrega a filas pares, columna B</td></tr>
+              <tr><td>Versión 1</td><td style="font-family:'JetBrains Mono',monospace;color:#c9974c;font-size:16px;font-weight:700;">347</td><td style="opacity:0.5;">Filas impares, columna A</td></tr>
+              <tr><td>Versión 2</td><td style="font-family:'JetBrains Mono',monospace;color:#c9974c;font-size:16px;font-weight:700;">512</td><td style="opacity:0.5;">Filas impares, columna B</td></tr>
+              <tr><td>Versión 3</td><td style="font-family:'JetBrains Mono',monospace;color:#c9974c;font-size:16px;font-weight:700;">769</td><td style="opacity:0.5;">Filas pares, columna A</td></tr>
+              <tr><td>Versión 4</td><td style="font-family:'JetBrains Mono',monospace;color:#c9974c;font-size:16px;font-weight:700;">284</td><td style="opacity:0.5;">Filas pares, columna B</td></tr>
             </tbody>
           </table>
-          <p style="margin-top:16px;font-size:12px;opacity:0.35;">Los estudiantes no saben que existen 4 versiones. Solo ven el campo PIN.</p>
+          <p style="margin-top:12px;font-size:12px;opacity:0.35;">Los estudiantes solo ven el campo PIN — nunca ven que hay 4 versiones.</p>
         </div>
+
+        <!-- 🔑 Teacher PIN -->
         <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:24px;">
           <h4 style="color:#c9974c;margin-bottom:12px;font-size:15px;">🔑 PIN Maestro del Docente</h4>
           <p style="font-size:13px;opacity:0.5;margin-bottom:8px;">Su PIN actual: <span style="font-family:'JetBrains Mono',monospace;color:#c9974c;font-size:18px;font-weight:700;">8521</span></p>
@@ -2320,6 +2466,7 @@ function tpTab(id){
 function renderTeacherPanel(){
   allResults=JSON.parse(localStorage.getItem('icfes_results')||'[]');
   renderGeneral();
+  loadSheetsUrlToUI();
 }
 function renderGeneral(){
   const n=allResults.length;
@@ -2465,14 +2612,18 @@ function downloadXLSX(type){
 }
 // Legacy alias kept for any remaining button references
 function downloadCSV(type){ downloadXLSX(type); }
-function clearResults(){
-  if(!confirm('¿Borrar TODOS los resultados? Esta acción no se puede deshacer.')) return;
-  allResults=[];
-  localStorage.removeItem('icfes_results');
-  renderTeacherPanel();
-  renderGroupCards();
-  renderIndividual();
-  alert('Resultados borrados.');
+function clearResults(){ clearCloudBin(); } // alias
+
+function loadCloudConfigToUI(){
+  const {binId,apiKey}=getCloudConfig();
+  const binInput=document.getElementById('tp-binid-input');
+  const keyInput=document.getElementById('tp-apikey-input');
+  if(binInput) binInput.value=binId;
+  if(keyInput) keyInput.value=apiKey;
+  document.getElementById('tp-binid-display').textContent=binId||'—';
+  document.getElementById('tp-sync-status').innerHTML=
+    binId?'<span style="color:#c9974c;">📋 Configuración cargada.</span>'
+         :'<span style="color:#f39c12;">⚠️ Sin configuración guardada aún.</span>';
 }
 </script>
 </body>
