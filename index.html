@@ -1938,16 +1938,24 @@ function submitQuiz(auto=false){
   });
   // ── Save locally ──
   try{ localStorage.setItem('icfes_results',JSON.stringify(allResults)); }catch(e){}
-  // ── Send to Google Sheets (both students individually) ──
+  // ── Send to Google Sheets (both students individually, staggered 1.5s apart) ──
   const timeUsed = formatTimeUsed(TOTAL_SECS - secsLeft);
-  [currentPair.st1, currentPair.st2].filter(Boolean).forEach(name=>{
-    sendToGoogleSheets({
-      name, group:currentPair.group,
-      score, total:15,
-      pct:Math.round(score/15*100),
-      time:new Date().toLocaleString('es-CO'),
-      timeUsed, auto
-    });
+  const ts2 = new Date().toLocaleString('es-CO');
+  const pct2 = Math.round(score/15*100);
+  const students = [currentPair.st1, currentPair.st2].filter(name => name && name.trim());
+  students.forEach((name, idx)=>{
+    setTimeout(()=>{
+      sendToGoogleSheets({
+        name:  name.trim().toUpperCase(),
+        group: currentPair.group,
+        score: score,
+        total: 15,
+        pct:   pct2,
+        time:  ts2,
+        timeUsed: timeUsed,
+        auto:  auto ? true : false
+      });
+    }, idx * 1500);   // 0ms for first student, 1500ms for second
   });
   if(document.getElementById('teacher-panel').style.display!=='none') renderTeacherPanel();
 
@@ -2164,23 +2172,31 @@ function buildGetUrl(baseUrl, record){
   return baseUrl + '?' + p.toString();
 }
 
-// Send ONE student record using an invisible <img> GET request.
-// This technique bypasses CORS entirely — the browser loads the URL
-// as if it were an image; Apps Script handles it in doGet().
+// Send ONE student record via GET fetch with no-cors.
+// GET + no-cors works perfectly — no CORS issues, follows redirects.
+// (Only POST+body was the problem before, not GET.)
 function sendToGoogleSheets(record){
   const url = getSheetsUrl();
   if(!url) return;
   try{
     const fullUrl = buildGetUrl(url, record);
-    const img = new Image();
-    img.src = fullUrl;
-    // No error handling needed — fire-and-forget
+    // Try fetch first (most reliable)
+    fetch(fullUrl, { method:'GET', mode:'no-cors' })
+      .catch(()=>{
+        // Absolute fallback: img beacon
+        const img = new Image();
+        img.src = fullUrl;
+      });
   } catch(err){
-    console.warn('Sheets send failed:', err.message);
+    // Last resort: img beacon
+    try{
+      const img = new Image();
+      img.src = buildGetUrl(getSheetsUrl(), record);
+    } catch(e2){}
   }
 }
 
-// Teacher: verify connection (opens URL in new tab so we can see the JSON response)
+// Teacher: verify connection
 async function testSheetsConnection(){
   const rawUrl = document.getElementById('tp-sheets-url').value.trim();
   const statusEl = document.getElementById('tp-sync-status');
@@ -2188,25 +2204,41 @@ async function testSheetsConnection(){
     statusEl.innerHTML='<span style="color:#e74c3c;">⚠️ Ingresa primero la URL del script.</span>';
     return;
   }
-  // Save the URL immediately
   localStorage.setItem(GS_KEY, rawUrl);
-  statusEl.innerHTML='<span style="color:#f39c12;">⏳ Enviando registro de prueba...</span>';
+  statusEl.innerHTML='<span style="color:#f39c12;">⏳ Verificando...</span>';
 
-  // Send a test record using the same img technique
+  // First do a direct GET to check the endpoint responds
+  const pingUrl = rawUrl + '?action=ping&ts=' + Date.now();
+  try{
+    const res = await fetch(pingUrl, { mode:'cors' });
+    const json = await res.json();
+    if(json.status === 'ok'){
+      statusEl.innerHTML='<span style="color:#2ecc71;">✅ Conexión verificada. Enviando registro de prueba...</span>';
+    }
+  } catch(corsErr){
+    // CORS on ping is fine — the important thing is doGet works
+    statusEl.innerHTML='<span style="color:#f39c12;">⏳ Enviando registro de prueba a Sheets...</span>';
+  }
+
+  // Send test record
   sendToGoogleSheets({
-    name:'PRUEBA DE CONEXIÓN', group:'Test', score:15, total:15,
-    pct:100, timeUsed:'0:00', time:new Date().toLocaleString('es-CO'), auto:false
+    name:'PRUEBA DE CONEXION', group:'Test',
+    score:15, total:15, pct:100,
+    timeUsed:'0:30', time:new Date().toLocaleString('es-CO'), auto:false
   });
 
-  // After 2 seconds tell user to check Sheets
   setTimeout(()=>{
+    const verifyUrl = rawUrl + '?action=ping';
     statusEl.innerHTML=`
       <span style="color:#2ecc71;">
-        ✅ URL guardada. Se envió un registro de prueba llamado <strong>PRUEBA DE CONEXIÓN</strong>.<br>
-        Abre tu hoja de Google Sheets y verifica que aparezca esa fila.<br>
-        Si no aparece en 10 segundos, revisa que la implementación esté publicada con acceso <em>"Cualquier persona"</em>.
+        ✅ URL guardada y registro de prueba enviado.<br>
+        Revisa tu hoja de Google Sheets — debe aparecer la fila <strong>PRUEBA DE CONEXION</strong>.<br>
+        ¿No aparece? Haz clic aquí para verificar que el script responde:
+        <a href="${verifyUrl}" target="_blank"
+           style="color:#c9974c;font-weight:700;">Abrir script en nueva pestaña →</a>
+        <br><small style="opacity:0.7;">Debe mostrar: {"status":"ok","message":"Webhook activo"}</small>
       </span>`;
-  }, 2000);
+  }, 2500);
 }
 
 function loadSheetsUrlToUI(){
