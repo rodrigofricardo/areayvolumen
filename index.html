@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="gs-url" content="https://script.google.com/macros/s/AKfycbwQ_QjGBJV-susymUSGfQjWnGzV59qUx7xGoTNBcFQl1x5QknsW7hvZ0BaacI59tu-v/exec">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Secuencia Didáctica – Áreas y Volúmenes | Mg. Rodrigo F. Ricardo C.</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -1767,6 +1768,13 @@ const banks = {
 // ===================== PIN → VERSION MAPPING (hidden from students) =====================
 const PIN_TO_VERSION = {'347':1,'512':2,'769':3,'284':4};
 
+// ══════════════════════════════════════════════════════════════════════════════
+// URL DEL SCRIPT DE GOOGLE SHEETS — configurada por el docente desde el panel
+// Esta constante se actualiza automáticamente al guardar en ⚙️ Configuración
+// y queda incrustada en el HTML para que funcione desde CUALQUIER dispositivo.
+// ══════════════════════════════════════════════════════════════════════════════
+const SHEETS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQ_QjGBJV-susymUSGfQjWnGzV59qUx7xGoTNBcFQl1x5QknsW7hvZ0BaacI59tu-v/exec';
+
 let selectedVersion = 1;
 let currentPair = {st1:'', st2:'', group:''};   // both students
 let allResults   = JSON.parse(localStorage.getItem('icfes_results')||'[]');
@@ -2145,7 +2153,9 @@ function toggleCalc(cid){
 const GS_KEY = 'icfes_sheets_url';
 
 function getSheetsUrl(){
-  return localStorage.getItem(GS_KEY) || '';
+  // Priority: 1) baked into HTML meta tag (works on ALL devices)
+  //           2) localStorage (fallback for same device)
+  return SHEETS_SCRIPT_URL || localStorage.getItem(GS_KEY) || '';
 }
 
 // Format elapsed seconds as mm:ss
@@ -2205,6 +2215,9 @@ async function testSheetsConnection(){
     return;
   }
   localStorage.setItem(GS_KEY, rawUrl);
+  // Also write into the meta tag so it works on this device immediately
+  const metaTag = document.querySelector('meta[name="gs-url"]');
+  if(metaTag) metaTag.setAttribute('content', rawUrl);
   statusEl.innerHTML='<span style="color:#f39c12;">⏳ Verificando...</span>';
 
   // First do a direct GET to check the endpoint responds
@@ -2245,6 +2258,48 @@ function loadSheetsUrlToUI(){
   const url = getSheetsUrl();
   const inp = document.getElementById('tp-sheets-url');
   if(inp && url) inp.value = url;
+}
+
+// ── Bake URL into the HTML and download the updated file ─────────────────────
+// This generates a new copy of the HTML with the Apps Script URL permanently
+// embedded inside the <meta name="gs-url"> tag.
+// Students open THIS downloaded file — works on every device, no configuration needed.
+function bakeUrlAndDownload(){
+  const rawUrl = document.getElementById('tp-sheets-url').value.trim();
+  const statusEl = document.getElementById('tp-sync-status');
+  if(!rawUrl){
+    statusEl.innerHTML='<span style="color:#e74c3c;">⚠️ Primero ingresa y verifica la URL del script.</span>';
+    return;
+  }
+
+  // Get the full HTML source of this page
+  let html = document.documentElement.outerHTML;
+
+  // Replace the empty meta tag with one that has the URL baked in
+  // Handle both empty content and any previously baked URL
+  html = html.replace(
+    /<meta name="gs-url" content="[^"]*">/,
+    `<meta name="gs-url" content="https://script.google.com/macros/s/AKfycbwQ_QjGBJV-susymUSGfQjWnGzV59qUx7xGoTNBcFQl1x5QknsW7hvZ0BaacI59tu-v/exec">`
+  );
+
+  // Also ensure localStorage is set
+  localStorage.setItem(GS_KEY, rawUrl);
+
+  // Download the modified HTML
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'secuencia_didactica_LISTA.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+
+  statusEl.innerHTML = `
+    <span style="color:#2ecc71;">
+      ✅ <strong>Archivo descargado: secuencia_didactica_LISTA.html</strong><br>
+      Ese archivo tiene la URL incrustada. Compártelo con los estudiantes<br>
+      (por correo, Google Drive, WhatsApp, etc.) — funcionará desde<br>
+      cualquier celular o computador sin necesidad de configuración.
+    </span>`;
 }
 
 function clearCloudBin(){
@@ -2438,13 +2493,15 @@ window.addEventListener('scroll',()=>{
                      font-size:12px;outline:none;box-sizing:border-box;">
           </div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
-            <button class="tp-btn" onclick="testSheetsConnection()" style="background:rgba(39,174,96,0.7);color:#fff;">✅ Guardar y verificar conexión</button>
-            <button class="tp-btn secondary" onclick="loadSheetsUrlToUI()">📋 Cargar URL guardada</button>
+            <button class="tp-btn" onclick="testSheetsConnection()" style="background:rgba(39,174,96,0.7);color:#fff;">✅ Verificar conexión</button>
+            <button class="tp-btn" onclick="bakeUrlAndDownload()" style="background:#c9974c;color:#0f0e17;font-weight:800;">⬇️ GUARDAR EN ARCHIVO Y DESCARGAR</button>
           </div>
           <div id="tp-sync-status" style="font-size:13px;min-height:20px;line-height:1.6;"></div>
-          <div style="margin-top:14px;padding:12px 14px;background:rgba(255,255,255,0.04);border-radius:7px;font-size:12px;opacity:0.55;line-height:1.7;">
-            ℹ️ Cada vez que un estudiante envía la prueba, su resultado aparece automáticamente en tu hoja de Google Sheets.<br>
-            La hoja tendrá dos pestañas: <strong>Resultados</strong> (individual) y <strong>Resumen por Grupo</strong> (consolidado).
+          <div style="margin-top:14px;padding:12px 14px;background:rgba(201,151,76,0.12);border:1px solid rgba(201,151,76,0.3);border-radius:7px;font-size:13px;line-height:1.8;">
+            <strong style="color:#c9974c;">⚠️ Paso clave para todos los dispositivos:</strong><br>
+            Después de verificar, haz clic en <strong>"⬇️ GUARDAR EN ARCHIVO Y DESCARGAR"</strong>.<br>
+            Ese botón genera una nueva versión del HTML con la URL <strong>incrustada permanentemente</strong>.<br>
+            Ese archivo nuevo es el que deben abrir los estudiantes desde sus celulares — funciona desde cualquier dispositivo sin configuración adicional.
           </div>
         </div>
 
